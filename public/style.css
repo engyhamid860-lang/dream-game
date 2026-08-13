@@ -1,0 +1,1570 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@500;700;900&display=swap');
+
+:root {
+  --bg-main: #0b0717;
+  --bg-card: rgba(22, 17, 43, 0.88);
+  --bg-card-hover: rgba(35, 27, 66, 0.95);
+  --accent-gold: #ffd700;
+  --accent-orange: #ff5e00;
+
+  --color-dream: #a855f7;
+  --color-dream-glow: rgba(168, 85, 247, 0.6);
+  --color-lightning: #eab308;
+  --color-lightning-glow: rgba(234, 179, 8, 0.6);
+  --color-fire: #ef4444;
+  --color-fire-glow: rgba(239, 68, 68, 0.6);
+
+  --text-light: #ffffff;
+  --text-muted: #94a3b8;
+  --border-radius: 20px;
+  --font-family: 'Cairo', 'Tajawal', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+button, .char-card, .chip-btn, .frame-icon-btn, .cartoon-repeat-btn {
+  touch-action: manipulation;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+body {
+  font-family: var(--font-family);
+  background: var(--bg-main);
+  color: var(--text-light);
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  direction: rtl;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Animated Rich Game Background Layer with Generated Cartoon Art */
+.bg-game-layer {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: 
+    linear-gradient(180deg, rgba(11, 7, 23, 0.78) 0%, rgba(11, 7, 23, 0.9) 100%),
+    url('assets/game_bg.jpg') center/cover no-repeat;
+  filter: brightness(0.9) contrast(1.1);
+  animation: bgPulseZoom 20s ease-in-out infinite alternate;
+}
+
+@keyframes bgPulseZoom {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.04); }
+}
+
+/* 1. Deluxe Royal Loading Start Screen Overlay */
+.start-screen-overlay {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(88, 28, 135, 0.98) 0%, rgba(30, 10, 60, 0.99) 70%, rgba(10, 5, 20, 1) 100%);
+  backdrop-filter: blur(25px);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.start-screen-overlay.fade-out {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.start-card {
+  background: linear-gradient(145deg, rgba(88, 28, 135, 0.94), rgba(131, 24, 67, 0.94), rgba(46, 16, 101, 0.98));
+  border: 2.5px solid #ffd700;
+  border-radius: 28px;
+  padding: 36px 28px;
+  max-width: 380px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.95), 0 0 50px rgba(255, 215, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  text-align: center;
+  animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes popIn {
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.start-logo-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.start-app-icon {
+  width: 90px;
+  height: 90px;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 3px solid var(--accent-gold);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+  background: rgba(0, 0, 0, 0.4);
+  animation: pulseIcon 2s ease-in-out infinite alternate;
+}
+
+@keyframes pulseIcon {
+  0% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+  100% { transform: scale(1.06); box-shadow: 0 0 35px rgba(255, 215, 0, 0.6); }
+}
+
+.app-icon-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.start-title {
+  font-size: 2rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #ffd700 0%, #ff7b00 50%, #c084fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
+  letter-spacing: -0.5px;
+}
+
+.start-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+/* Loading Progress Bar Container */
+.loading-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.loading-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.loading-label {
+  color: #cbd5e1;
+}
+
+.loading-percentage {
+  color: var(--accent-gold);
+  font-weight: 900;
+}
+
+.progress-bar-track {
+  width: 100%;
+  height: 14px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  overflow: hidden;
+  padding: 2px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #9333ea 0%, #ec4899 50%, #f59e0b 100%);
+  border-radius: 20px;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 15px rgba(236, 72, 153, 0.8);
+}
+
+/* 2. Main Game Container (واجهة متجاوبة تفاعلية لكافة الشاشات) */
+.voice-app-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  background: 
+    linear-gradient(180deg, rgba(20, 14, 42, 0.88) 0%, rgba(12, 8, 26, 0.96) 100%),
+    url('assets/game_bg.jpg') center/cover no-repeat;
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  border-radius: 28px;
+  box-shadow: 
+    0 25px 60px rgba(0, 0, 0, 0.85), 
+    0 0 45px rgba(168, 85, 247, 0.3);
+  backdrop-filter: blur(20px);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  touch-action: manipulation;
+  transition: max-width 0.3s ease;
+}
+
+@media (min-width: 992px) {
+  body {
+    padding: 20px 16px;
+  }
+  .voice-app-container {
+    max-width: 920px;
+  }
+  .characters-grid {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .chip-selector-section {
+    max-width: 720px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+@media (max-width: 900px) {
+  body {
+    padding: 0;
+    align-items: flex-start;
+  }
+  .voice-app-container {
+    max-width: 100vw;
+    min-height: 100vh;
+    min-height: 100dvh;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+  }
+}
+
+@media (max-width: 600px) {
+  html, body {
+    overflow: hidden;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    touch-action: none;
+  }
+  .voice-app-container {
+    max-width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: calc(6px + env(safe-area-inset-bottom, 0px));
+  }
+  .top-overlay-header {
+    padding: 6px 10px;
+  }
+  .frame-icon-btn {
+    padding: 4px 9px;
+    font-size: 0.72rem;
+    border-radius: 14px;
+    gap: 4px;
+  }
+  .frame-icon-btn .btn-icon {
+    font-size: 0.85rem;
+  }
+  .round-number {
+    padding: 3px 10px;
+    font-size: 0.74rem;
+    border-radius: 14px;
+  }
+  .game-card-wrapper {
+    padding: 2px 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+    gap: 2px;
+  }
+  .round-badge-row {
+    margin-bottom: 1px;
+  }
+  .status-message {
+    font-size: 0.78rem;
+    margin: 1px 0;
+  }
+  .wheel-section {
+    margin: 1px 0;
+  }
+  .wheel-wrapper {
+    width: min(240px, 58vw);
+    height: min(240px, 58vw);
+    margin: 2px auto;
+  }
+  .characters-grid {
+    gap: 4px;
+    margin-top: 1px;
+  }
+  .char-card.frame-themed-card {
+    padding: 4px 2px;
+    min-height: 58px;
+    gap: 2px;
+  }
+  .card-small-icon-img {
+    width: 28px;
+    height: 28px;
+  }
+  .card-top-combined-bet {
+    font-size: 0.78rem;
+    padding: 1px 8px;
+    margin: 1px auto 0 auto;
+  }
+  .chip-selector-section {
+    padding: 8px 12px;
+    margin-top: 2px;
+    margin-bottom: 4px;
+    width: 100%;
+  }
+  .coins-bar-container {
+    padding: 0;
+    gap: 6px;
+  }
+  .chip-btn {
+    width: 29px;
+    height: 29px;
+    font-size: 0.48rem;
+  }
+  .chip-inner-ring {
+    width: 18px;
+    height: 18px;
+  }
+  .chip-num {
+    font-size: 0.52rem;
+  }
+  .chips-row {
+    gap: 3px;
+  }
+  .chip-btn.chip-500 {
+    margin-left: 3px;
+  }
+  .chip-btn.chip-10k {
+    margin-left: 3px;
+  }
+  .player-profile-wallet-box {
+    padding: 2px 6px;
+    gap: 4px;
+  }
+  .player-avatar-frame {
+    width: 25px;
+    height: 25px;
+    font-size: 0.85rem;
+  }
+  .player-name-text {
+    font-size: 0.58rem;
+  }
+  .user-balance-text {
+    font-size: 0.76rem;
+  }
+}
+
+/* Floating Top Utility Header (بدون شريط خلفية علوي) */
+.top-overlay-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  background: transparent;
+  width: 100%;
+  position: relative;
+  z-index: 20;
+}
+
+/* Right Side: Frame-themed Icon Buttons for My Bets & History (جانب أيمن أزرار بألوان الإطار) */
+.top-right-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.frame-icon-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: linear-gradient(135deg, rgba(88, 28, 135, 0.92) 0%, rgba(136, 19, 55, 0.92) 100%);
+  border: 1.5px solid rgba(255, 215, 0, 0.6);
+  color: #ffffff;
+  border-radius: 18px;
+  padding: 5px 12px;
+  font-family: var(--font-family);
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.frame-icon-btn:hover {
+  transform: scale(1.06);
+  border-color: #ffd700;
+  box-shadow: 0 0 16px rgba(255, 215, 0, 0.7);
+}
+
+.frame-icon-btn .btn-icon {
+  font-size: 0.92rem;
+}
+
+.frame-icon-btn.icon-only-btn {
+  padding: 5px 7px;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  justify-content: center;
+}
+
+.frame-icon-btn.muted {
+  background: linear-gradient(135deg, rgba(60, 60, 60, 0.85) 0%, rgba(30, 30, 30, 0.85) 100%);
+  border-color: rgba(255, 255, 255, 0.3);
+  opacity: 0.85;
+}
+
+/* Left Side: Round Badge (الجولة في يسار الشاشة) */
+.top-left-round-badge {
+  display: flex;
+  align-items: center;
+}
+
+.round-number {
+  background: linear-gradient(135deg, rgba(22, 12, 45, 0.9) 0%, rgba(45, 16, 101, 0.9) 100%);
+  border: 1.5px solid rgba(255, 215, 0, 0.5);
+  padding: 4px 14px;
+  border-radius: 18px;
+  font-size: 0.8rem;
+  color: var(--accent-gold);
+  font-weight: 900;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
+  letter-spacing: 0.5px;
+}
+
+/* Main Game Card Layout */
+.game-card-wrapper {
+  padding: 8px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+}
+
+.game-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.game-title {
+  font-size: 1.45rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #ffd700 0%, #ff7b00 50%, #c084fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+.round-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.round-number {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: #cbd5e1;
+  font-weight: 700;
+}
+
+.timer-box {
+  background: linear-gradient(135deg, #1e1b4b 0%, #31103f 100%);
+  border: 2px solid var(--accent-gold);
+  border-radius: 24px;
+  padding: 4px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+}
+
+.timer-box.warning {
+  border-color: #ef4444;
+  animation: timerBlink 0.5s infinite alternate;
+}
+
+@keyframes timerBlink {
+  from { box-shadow: 0 0 5px #ef4444; }
+  to { box-shadow: 0 0 20px #ef4444; }
+}
+
+.timer-icon {
+  font-size: 1rem;
+}
+
+.timer-text {
+  font-size: 1.15rem;
+  font-weight: 900;
+  font-family: monospace;
+  color: #ffffff;
+}
+
+.status-message {
+  display: none !important;
+}
+
+/* 🎡 Deluxe Fortune Wheel Styling & Custom Golden Frame Overlay */
+.wheel-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 6px 0;
+  position: relative;
+  width: 100%;
+}
+
+.wheel-wrapper {
+  position: relative;
+  z-index: 10;
+  width: min(420px, 84vw);
+  height: min(420px, 84vw);
+  aspect-ratio: 1 / 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px auto;
+}
+
+/* Deluxe 3D Pointer Pin on Top of Sector (تنزيل سهم التوقف بوضوح على القطاع) */
+.wheel-pointer-deluxe {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.9));
+}
+
+/* User-Provided Deluxe 3D Fantasy Frame Image Overlay (نسبة دائرية 1:1 متناسبة 100% بدون أي بيضاوية أو تشويه على الهاتف) */
+.wheel-custom-frame-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 135%;
+  height: 135%;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  z-index: 30;
+  pointer-events: none;
+  filter: none;
+  transition: transform 0.15s ease;
+}
+
+@keyframes pointerRecoilPulse {
+  0% { transform: translateX(-50%) translateY(0) scale(1); }
+  50% { transform: translateX(-50%) translateY(5px) scale(1.1); }
+  100% { transform: translateX(-50%) translateY(0) scale(1); }
+}
+
+.pointer-crystal-head {
+  width: 32px;
+  height: 22px;
+  background: linear-gradient(180deg, #ffe775 0%, #ffd700 45%, #b8860b 100%);
+  border: 1.8px solid #ffffff;
+  border-radius: 8px 8px 4px 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.8), 0 2px 6px rgba(0,0,0,0.6);
+}
+
+.pointer-jewel {
+  width: 14px;
+  height: 14px;
+  background: radial-gradient(circle, #38bdf8 0%, #0284c7 70%, #0369a1 100%);
+  border-radius: 50%;
+  border: 1.2px solid #ffffff;
+  box-shadow: 0 0 12px #38bdf8, inset 0 1px 2px rgba(255, 255, 255, 0.9);
+}
+
+.pointer-gold-tip {
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 20px solid #ffd700;
+  margin-top: -1px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
+  position: relative;
+}
+
+.pointer-gold-tip::after {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: -8px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 14px solid #fff59d;
+}
+
+#wheelCanvas {
+  width: 95%;
+  height: 95%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  box-shadow: none;
+  transition: none;
+}
+
+/* 🏆 Centered Winners Popup Box (مربع صغير وأنيق غير حاجب للعبة ويختفي تلقائياً) */
+.winners-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  backdrop-filter: none;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  padding: 12px;
+}
+
+.winners-popup-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.winners-pop-card {
+  background: linear-gradient(145deg, rgba(88, 28, 135, 0.97), rgba(131, 24, 67, 0.97), rgba(46, 16, 101, 0.98));
+  border: 2.5px solid #ffd700;
+  border-radius: 22px;
+  padding: 16px 12px 10px 12px;
+  max-width: 290px;
+  width: 88%;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.9), 0 0 35px rgba(255, 215, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  transform: scale(0.75);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+}
+
+.winners-popup-overlay.active .winners-pop-card {
+  transform: scale(1);
+}
+
+/* Top Wave Ribbon Header */
+.pop-ribbon-header {
+  background: linear-gradient(135deg, #7e22ce 0%, #ec4899 50%, #d97706 100%);
+  border: 1.5px solid #ffd700;
+  padding: 4px 18px;
+  border-radius: 0 0 14px 14px;
+  box-shadow: 0 4px 15px rgba(236, 72, 153, 0.6);
+  margin-top: -16px;
+}
+
+.ribbon-text {
+  color: #ffffff;
+  font-size: 0.92rem;
+  font-weight: 900;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.pop-sub-header {
+  font-size: 0.68rem;
+  color: #cbd5e1;
+  font-weight: 700;
+  margin-top: -2px;
+}
+
+/* 🥇🥈🥉 Top 3 Podium Winners Container */
+.podium-winners-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 8px;
+  margin: 4px 0 6px 0;
+  width: 100%;
+}
+
+.podium-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  flex: 1;
+}
+
+/* Rank 1 Center Podium */
+.podium-card.rank-1 {
+  order: 2;
+  transform: scale(1.08);
+  margin-bottom: 4px;
+}
+
+/* Rank 2 Left Podium */
+.podium-card.rank-2 {
+  order: 1;
+}
+
+/* Rank 3 Right Podium */
+.podium-card.rank-3 {
+  order: 3;
+}
+
+.podium-crown {
+  font-size: 1rem;
+  margin-bottom: -8px;
+  z-index: 5;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.6));
+}
+
+.podium-avatar-frame {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid #ffd700;
+  background: #1a103c;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.1rem;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+  overflow: hidden;
+}
+
+.podium-card.rank-2 .podium-avatar-frame {
+  border-color: #e2e8f0;
+  box-shadow: 0 0 8px rgba(226, 232, 240, 0.3);
+}
+
+.podium-card.rank-3 .podium-avatar-frame {
+  border-color: #cd7f32;
+  box-shadow: 0 0 8px rgba(205, 127, 50, 0.3);
+}
+
+.podium-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.podium-username-banner {
+  background: linear-gradient(90deg, #f59e0b, #b45309);
+  color: white;
+  padding: 1px 6px;
+  border-radius: 8px;
+  font-size: 0.6rem;
+  font-weight: 900;
+  white-space: nowrap;
+  margin: 1px 0;
+  border: 1px solid #ffd700;
+}
+
+.podium-stat-line {
+  font-size: 0.6rem;
+  color: #cbd5e1;
+  font-weight: 700;
+}
+
+.podium-stat-line.win {
+  color: #ffd700;
+  font-weight: 900;
+}
+
+/* Bottom Player Personal Summary Row */
+.my-round-stats-row {
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 5px 8px;
+  border-radius: 12px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2px;
+}
+
+.my-player-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.my-avatar-mini {
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  border: 1px solid var(--accent-gold);
+  background: #1a103c;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.my-name-text {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #f8fafc;
+}
+
+.my-stats-right {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  font-size: 0.62rem;
+}
+
+.stat-line {
+  color: #cbd5e1;
+}
+
+.stat-line.win b {
+  color: #4ade80;
+}
+
+/* Character Selection Grid - 100% Full Fill Artwork Cards (الصور تملا الكارت بالكامل بدون تأثير ذهبي) */
+.characters-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.char-card.frame-themed-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  padding: 10px 6px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  cursor: pointer;
+  border: 2px solid rgba(255, 215, 0, 0.6);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7), inset 0 1px 3px rgba(255, 255, 255, 0.3);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  min-height: 85px;
+}
+
+.char-card.frame-themed-card:hover {
+  border-color: rgba(255, 215, 0, 0.6);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+}
+
+.char-card.frame-themed-card:active {
+  border-color: rgba(255, 215, 0, 0.6);
+}
+
+.char-card.frame-themed-card[data-char="dream"] {
+  background: linear-gradient(145deg, #7e22ce 0%, #a855f7 50%, #3b0764 100%);
+}
+
+.char-card.frame-themed-card[data-char="lightning"] {
+  background: linear-gradient(145deg, #1e1b4b 0%, #4338ca 50%, #0f172a 100%);
+}
+
+.char-card.frame-themed-card[data-char="fire"] {
+  background: linear-gradient(145deg, #9d174d 0%, #be185d 50%, #4c0519 100%);
+}
+
+.card-name-title {
+  font-size: 0.92rem;
+  font-weight: 900;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+.card-multiplier-badge {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: linear-gradient(135deg, #ff007f, #7928ca);
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 900;
+  padding: 1px 7px;
+  border-radius: 10px;
+  z-index: 6;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.card-multiplier-badge.x10 {
+  background: linear-gradient(135deg, #9333ea, #ec4899);
+}
+
+/* Single Combined Total Bet Number at Top of Card (رقم مندمج أنيق بالإنجليزية في أعلى الكارت) */
+.card-top-combined-bet {
+  position: relative;
+  z-index: 5;
+  margin: 6px auto 0 auto;
+  font-family: 'Outfit', 'Montserrat', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: #ffffff;
+  background: linear-gradient(180deg, rgba(15, 5, 30, 0.85) 0%, rgba(35, 15, 65, 0.85) 100%);
+  border: 1.5px solid rgba(255, 215, 0, 0.55);
+  padding: 2px 14px;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(255, 255, 255, 0.25);
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+  display: inline-block;
+}
+
+/* Disappearing Placed Bet Chips Layer (الأيكونات تختفي بعد وضع الرهان) */
+.disappearing-chip-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.disappearing-placed-chip {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.5rem;
+  font-weight: 900;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+  animation: popAndFade 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+}
+
+.disappearing-placed-chip.chip-500 { background: repeating-conic-gradient(#ec4899 0deg 30deg, #ffffff 30deg 60deg); }
+.disappearing-placed-chip.chip-1000 { background: repeating-conic-gradient(#f97316 0deg 30deg, #ffffff 30deg 60deg); }
+.disappearing-placed-chip.chip-10000 { background: repeating-conic-gradient(#84cc16 0deg 30deg, #ffffff 30deg 60deg); }
+.disappearing-placed-chip.chip-100000 { background: repeating-conic-gradient(#0284c7 0deg 30deg, #ffffff 30deg 60deg); }
+
+@keyframes popAndFade {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -40%) scale(0.4);
+  }
+  25% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.25);
+  }
+  65% {
+    opacity: 1;
+    transform: translate(-50%, -60%) scale(1.05);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -85%) scale(0.6);
+  }
+}
+
+/* Winner Highlights */
+.char-card.winner-highlight {
+  transform: scale(1.08);
+  border-color: #ffffff !important;
+  box-shadow: 0 0 35px #ffffff, inset 0 0 15px rgba(255, 255, 255, 0.5) !important;
+  z-index: 10;
+}
+
+.char-card.winner-declared {
+  animation: winPulse 1s infinite alternate;
+  border-color: var(--accent-gold) !important;
+  box-shadow: 0 0 40px var(--accent-gold) !important;
+  z-index: 10;
+}
+
+.click-to-bet-hint {
+  display: none;
+}
+
+/* 🪙 Casino Chips & Player Profile Bar (نفس ألوان الإطار الخيالي الفاخرة وبأفضل مسافات بين الفيشات) */
+.chip-selector-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: linear-gradient(135deg, rgba(88, 28, 135, 0.92) 0%, rgba(136, 19, 55, 0.92) 50%, rgba(30, 16, 53, 0.92) 100%);
+  padding: 10px 14px;
+  border-radius: 22px;
+  border: 1.8px solid rgba(255, 215, 0, 0.55);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(255, 255, 255, 0.25);
+  width: 100%;
+}
+
+.coins-bar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+/* Left Side: Player Profile & Wallet Box */
+.player-profile-wallet-box {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, rgba(48, 18, 80, 0.95), rgba(24, 10, 48, 0.95));
+  border: 1.5px solid rgba(255, 215, 0, 0.4);
+  padding: 4px 8px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+}
+
+.player-avatar-frame {
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  border: 1.5px solid var(--accent-gold);
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.player-wallet-info {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  line-height: 1.15;
+}
+
+.player-name-text {
+  font-size: 0.62rem;
+  color: #cbd5e1;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.balance-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.coin-gold-dot {
+  font-size: 0.75rem;
+}
+
+.balance-amount {
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 900;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+}
+
+.plus-deposit-btn {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  border: 1.5px solid #ffffff;
+  color: white;
+  font-weight: 900;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  margin-right: 2px;
+  transition: transform 0.2s ease;
+}
+
+.plus-deposit-btn:hover {
+  transform: scale(1.15);
+}
+
+/* Right Side: Striped Casino Poker Chips (500 Magenta, 1K Orange, 10K Green, 100K Blue) */
+.chips-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chip-btn {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  position: relative;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* Striped Conic Gradients & Spacing Between 500 / 1K and 10K / 100K */
+.chip-btn.chip-500 {
+  background: repeating-conic-gradient(#ec4899 0deg 30deg, #ffffff 30deg 60deg);
+  margin-left: 7px; /* مسافة مخصصة واضحة بين زر الرهان 500 و 1000 */
+}
+
+.chip-btn.chip-1k {
+  background: repeating-conic-gradient(#f97316 0deg 30deg, #ffffff 30deg 60deg);
+}
+
+.chip-btn.chip-10k {
+  background: repeating-conic-gradient(#84cc16 0deg 30deg, #ffffff 30deg 60deg);
+  margin-left: 7px; /* مسافة مخصصة واضحة بين زر الرهان 10K و 100K */
+}
+
+.chip-btn.chip-100k {
+  background: repeating-conic-gradient(#0284c7 0deg 30deg, #ffffff 30deg 60deg);
+}
+
+/* Inner Ring Center Box */
+.chip-inner-ring {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1.2px solid #ffd700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.7);
+}
+
+.chip-500 .chip-inner-ring {
+  background: radial-gradient(circle, #db2777 0%, #831843 100%);
+}
+
+.chip-1k .chip-inner-ring {
+  background: radial-gradient(circle, #ea580c 0%, #7c2d12 100%);
+}
+
+.chip-10k .chip-inner-ring {
+  background: radial-gradient(circle, #65a30d 0%, #365314 100%);
+}
+
+.chip-100k .chip-inner-ring {
+  background: radial-gradient(circle, #0284c7 0%, #075985 100%);
+}
+
+.chip-num {
+  font-size: 0.68rem;
+  font-weight: 900;
+  color: #ffffff;
+  text-shadow: 0 1.5px 3px rgba(0, 0, 0, 0.9);
+}
+
+/* Active Glowing Halo Ring (مستقر بالكامل داخل الشريط بدون خروج) */
+.chip-btn.active {
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 3px #ffd700, 0 0 16px rgba(255, 215, 0, 0.8);
+  z-index: 10;
+}
+
+/* Winners Section */
+.winners-section {
+  background: rgba(22, 17, 43, 0.9);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  border-radius: 18px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.winners-title {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--accent-gold);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.winners-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.winner-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 6px 10px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  animation: slideUp 0.3s ease-out forwards;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.winner-user {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+}
+
+.winner-prize {
+  color: #4ade80;
+  font-weight: 900;
+}
+
+/* 📜 Results Strip Section & Repeat Button (مباشرة فوق الكروت، بعرض الشاشة الكامل وبألوان الإطار) */
+.results-and-repeat-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  margin: 2px 0 4px 0;
+}
+
+.repeat-btn-subrow {
+  display: flex;
+  justify-content: flex-start; /* Right side in RTL layout */
+  width: 100%;
+}
+
+.history-strip-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, rgba(88, 28, 135, 0.92) 0%, rgba(136, 19, 55, 0.92) 50%, rgba(30, 16, 53, 0.92) 100%);
+  border: 1.8px solid rgba(255, 215, 0, 0.55);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.25);
+  padding: 6px 12px;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+}
+
+.history-icons-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 2px;
+  overflow: hidden;
+  padding: 4px 2px 2px 2px;
+}
+
+.history-icon-badge-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.new-pill-tag {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  color: #ffffff;
+  font-size: 0.4rem;
+  font-weight: 900;
+  padding: 0px 3px;
+  border-radius: 5px;
+  border: 1px solid #ffd700;
+  box-shadow: 0 0 6px #ef4444;
+  z-index: 10;
+  animation: pulse 1s infinite alternate;
+  white-space: nowrap;
+}
+
+.history-icon-badge {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.2s ease;
+  animation: popIn 0.3s ease-out;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/* 🎨 3D Cartoon Repeat Bet Button ("🔄 كرر") - بألوان الإطار الخيالي الفاخرة */
+.cartoon-repeat-btn {
+  background: linear-gradient(135deg, #7e22ce 0%, #ec4899 50%, #d97706 100%);
+  border: 2px solid #ffd700;
+  border-bottom: 3.5px solid #581c87;
+  border-radius: 16px;
+  padding: 4px 12px;
+  color: #ffffff;
+  font-family: var(--font-family);
+  font-weight: 900;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
+  text-shadow: 0 1.5px 3px rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+  transition: transform 0.15s ease, border-bottom-width 0.15s ease;
+}
+
+.cartoon-repeat-btn:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #9333ea 0%, #f472b6 50%, #f59e0b 100%);
+  box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6);
+}
+
+.cartoon-repeat-btn:active {
+  transform: translateY(2px);
+  border-bottom-width: 1.5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.card-small-icon-img {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.8px solid #ffd700;
+  object-fit: cover;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.7);
+}
+
+.repeat-icon {
+  font-size: 0.85rem;
+}
+
+.repeat-text {
+  font-size: 0.78rem;
+  letter-spacing: 0.5px;
+}
+
+/* Floating Pop & Fade-Out Bet Amount Effect (تأثير ظهور قيمة الرهان واختفائه) */
+.floating-bet-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.floating-bet-popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  border: 1.5px solid #ffffff;
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 900;
+  padding: 2px 8px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  animation: floatAndFade 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.floating-bet-popup.chip-500 { background: linear-gradient(135deg, #ec4899, #be185d); }
+.floating-bet-popup.chip-1000 { background: linear-gradient(135deg, #f97316, #c2410c); }
+.floating-bet-popup.chip-10000 { background: linear-gradient(135deg, #84cc16, #4d7c0f); }
+.floating-bet-popup.chip-100000 { background: linear-gradient(135deg, #0284c7, #0369a1); }
+
+@keyframes floatAndFade {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -40%) scale(0.5);
+  }
+  30% {
+    opacity: 1;
+    transform: translate(-50%, -65%) scale(1.18);
+  }
+  70% {
+    opacity: 1;
+    transform: translate(-50%, -90%) scale(1.05);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -120%) scale(0.85);
+  }
+}
+
+.history-badge-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.history-icon-badge:hover {
+  transform: scale(1.2);
+}
+
+.history-icon-badge.dream {
+  border: 2px solid #a855f7;
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.6);
+}
+
+.history-icon-badge.lightning {
+  border: 2px solid #eab308;
+  box-shadow: 0 0 10px rgba(234, 179, 8, 0.6);
+}
+
+.history-icon-badge.fire {
+  border: 2px solid #ef4444;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
+}
+
+/* Modals */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  background: #16112b;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 24px;
+  width: 90%;
+  max-width: 420px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 8px;
+}
+
+.modal-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--accent-gold);
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* Canvas Particle Overlay */
+#effectsCanvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 99;
+}
+
+/* Toast Message */
+.toast-msg {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  background: #ef4444;
+  color: white;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  z-index: 2000;
+}
+
+.toast-msg.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.toast-msg.success {
+  background: #10b981;
+}

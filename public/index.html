@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>🎮 Dream Life — عجلة الحلم والبرق والنار</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&family=Montserrat:wght@700;900&family=Outfit:wght@600;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+
+  <!-- Background Animated Layer -->
+  <div class="bg-game-layer"></div>
+
+  <!-- Particle Effects Canvas -->
+  <canvas id="effectsCanvas"></canvas>
+
+  <!-- Notification Toast -->
+  <div id="toastMsg" class="toast-msg"></div>
+
+  <!-- 🏆 Center Popup Winners Box -->
+  <div id="roundWinnersPopup" class="winners-popup-overlay">
+    <div class="winners-pop-card">
+      
+      <!-- Top Ribbon Header -->
+      <div class="pop-ribbon-header">
+        <span class="ribbon-text">🎉 مبروك للفائزين</span>
+      </div>
+      <p class="pop-sub-header">تهانينا للفائزين في الجولة</p>
+
+      <!-- Top 3 Podium Winners Container -->
+      <div class="podium-winners-container" id="podiumWinnersContainer">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Current Player Personal Summary Bottom Row -->
+      <div class="my-round-stats-row" id="myRoundStatsRow">
+        <div class="my-player-left">
+          <div class="my-avatar-mini">👤</div>
+          <span class="my-name-text">أنت (اللاعب)</span>
+        </div>
+        <div class="my-stats-right">
+          <div class="stat-line"><span>الرهان:</span> <b id="myPopBetVal">0</b></div>
+          <div class="stat-line win"><span>فوز:</span> <b id="myPopWinVal">0</b></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 1. Deluxe Royal Loading Start Screen Overlay -->
+  <div id="startScreen" class="start-screen-overlay">
+    <div class="start-card">
+      <div class="start-logo-box">
+        <div class="start-app-icon">
+          <img src="assets/wheel_frame.png" alt="Dream Life Frame Icon" class="app-icon-img">
+        </div>
+        <h1 class="start-title">Dream Life</h1>
+        <p class="start-subtitle">✨ عجلة الحلم والبرق والنار ✨</p>
+      </div>
+
+      <div class="loading-container">
+        <div class="loading-info-row">
+          <span class="loading-label" id="loadingStatusLabel">جارٍ تحميل العجلة...</span>
+          <span class="loading-percentage" id="startProgressText">0%</span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="startProgressBar"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Main Game Container -->
+  <div class="voice-app-container">
+
+    <!-- Floating Top Utility Overlay Bar (بدون شريط خلفية علوي، أيكونات الأزرار باليمين والجولة باليسار) -->
+    <div class="top-overlay-header">
+      <!-- Right Side: Frame-themed Icon Buttons for My Bets & History (أيكونات أزرار بألوان الإطار في الجانب الأيمن) -->
+      <div class="top-right-actions">
+        <button class="frame-icon-btn" id="btnOpenMyBets">
+          <span class="btn-icon">💰</span>
+          <span class="btn-label">رهاناتي</span>
+        </button>
+        <button class="frame-icon-btn" id="btnOpenHistory">
+          <span class="btn-icon">📜</span>
+          <span class="btn-label">السجل</span>
+        </button>
+        <button class="frame-icon-btn icon-only-btn" id="btnToggleSound" title="كتم / تشغيل الصوت">
+          <span class="btn-icon" id="soundBtnIcon">🔊</span>
+        </button>
+      </div>
+
+      <!-- Left Side: Round Badge (الجولة في يسار الشاشة من الأعلى) -->
+      <div class="top-left-round-badge">
+        <span class="round-number" id="roundNumber">الجولة #101</span>
+      </div>
+    </div>
+
+    <!-- Main Game Section -->
+    <main class="game-card-wrapper">
+
+      <!-- 🎡 Interactive Fortune Wheel Section (الإطار الخيالي الفاخر مع العجلة وسهم التوقف) -->
+      <div class="wheel-section">
+        <div class="wheel-wrapper wheel-frame" id="wheelWrapper">
+          <!-- 3D Fantasy Pointer Arrow matching Frame Colors -->
+          <div class="wheel-pointer-deluxe fantasy-pointer" id="wheelPointer">
+            <div class="pointer-crystal-head fantasy-head">
+              <div class="pointer-jewel fantasy-ruby-jewel"></div>
+            </div>
+            <div class="pointer-gold-tip fantasy-tip"></div>
+          </div>
+
+          <!-- Custom Fantasy Frame Overlay -->
+          <img src="assets/wheel_frame.png" class="wheel-custom-frame-overlay" id="wheelFrameOverlay" alt="Fantasy Wheel Frame" />
+
+          <canvas id="wheelCanvas" width="550" height="550"></canvas>
+        </div>
+      </div>
+
+      <!-- 📜 Results Strip Section & Repeat Button (مباشرة فوق الكروت، بعرض الشاشة الكامل وبألوان الإطار) -->
+      <div class="results-and-repeat-section">
+        <!-- Top Sub-Row: Repeat Button on Right Side (زر كرر بالجانب الأيمن فوق الشريط) -->
+        <div class="repeat-btn-subrow">
+          <button class="cartoon-repeat-btn" id="btnRepeatBet" title="تكرار الرهان السابق">
+            <span class="repeat-icon">🔄</span>
+            <span class="repeat-text">كرر</span>
+          </button>
+        </div>
+
+        <!-- Full Width Results Strip Box (شريط النتائج فوق الكروت مباشرة بمقاس الشاشة وألوان الإطار) -->
+        <div class="history-strip-box full-width-frame-strip">
+          <div id="historyPillsContainer" class="history-icons-container">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Character Betting Cards Grid -->
+      <div class="characters-grid">
+
+        <!-- Character 1: Dream -->
+        <div class="char-card frame-themed-card" data-char="dream" id="cardDream">
+          <!-- Single Combined Total Bet Number at the VERY TOP of Card -->
+          <div class="card-top-combined-bet" id="totalBetDream">0</div>
+          <img src="assets/dream.jpg" class="card-small-icon-img" alt="الحلم">
+          <span class="card-multiplier-badge x10">x10</span>
+          <!-- Temporary Disappearing Placed Chip Layer -->
+          <div class="disappearing-chip-layer" id="disappearingChipDream"></div>
+        </div>
+
+        <!-- Character 2: Lightning -->
+        <div class="char-card frame-themed-card" data-char="lightning" id="cardLightning">
+          <!-- Single Combined Total Bet Number at the VERY TOP of Card -->
+          <div class="card-top-combined-bet" id="totalBetLightning">0</div>
+          <img src="assets/lightning.jpg" class="card-small-icon-img" alt="البرق">
+          <span class="card-multiplier-badge">x2</span>
+          <!-- Temporary Disappearing Placed Chip Layer -->
+          <div class="disappearing-chip-layer" id="disappearingChipLightning"></div>
+        </div>
+
+        <!-- Character 3: Fire -->
+        <div class="char-card frame-themed-card" data-char="fire" id="cardFire">
+          <!-- Single Combined Total Bet Number at the VERY TOP of Card -->
+          <div class="card-top-combined-bet" id="totalBetFire">0</div>
+          <img src="assets/fire.jpg" class="card-small-icon-img" alt="النار">
+          <span class="card-multiplier-badge">x2</span>
+          <!-- Temporary Disappearing Placed Chip Layer -->
+          <div class="disappearing-chip-layer" id="disappearingChipFire"></div>
+        </div>
+
+      </div>
+
+      <!-- 🪙 Striped Casino Poker Chips Selector Bar -->
+      <div class="chip-selector-section">
+        
+        <div class="coins-bar-container">
+          
+          <!-- Left Side: Player Profile & Wallet Box -->
+          <div class="player-profile-wallet-box">
+            <div class="player-avatar-frame">
+              <span class="player-avatar-icon">👤</span>
+            </div>
+            <div class="player-wallet-info">
+              <span class="player-name-text">أنت</span>
+              <div class="balance-row">
+                <span class="coin-gold-dot">🪙</span>
+                <span class="balance-amount" id="userBalanceText">150,000</span>
+                <button class="plus-deposit-btn" id="btnDeposit" title="شحن الرصيد">+</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Side: 4 Striped Casino Poker Chips -->
+          <div class="chips-row">
+            <button class="chip-btn chip-500" data-amount="500">
+              <div class="chip-inner-ring">
+                <span class="chip-num">500</span>
+              </div>
+            </button>
+            <button class="chip-btn chip-1k active" data-amount="1000">
+              <div class="chip-inner-ring">
+                <span class="chip-num">1K</span>
+              </div>
+            </button>
+            <button class="chip-btn chip-10k" data-amount="10000">
+              <div class="chip-inner-ring">
+                <span class="chip-num">10K</span>
+              </div>
+            </button>
+            <button class="chip-btn chip-100k" data-amount="100000">
+              <div class="chip-inner-ring">
+                <span class="chip-num">100K</span>
+              </div>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Modal: History -->
+  <div class="modal-overlay" id="modalHistory">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">📜 سجل الجولات الأخيرة</h2>
+        <button class="close-btn" data-modal="modalHistory">&times;</button>
+      </div>
+      <div id="historyModalBody" style="display: flex; flex-direction: column; gap: 8px;">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: My Bets -->
+  <div class="modal-overlay" id="modalMyBets">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">💰 سجل رهاناتي</h2>
+        <button class="close-btn" data-modal="modalMyBets">&times;</button>
+      </div>
+      <div id="myBetsModalBody" style="display: flex; flex-direction: column; gap: 8px;">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="sound.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "name": "dream-lightning-fire-game",
+  "version": "1.0.0",
+  "description": "Dream Lightning Fire Voice Chat Betting Game",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "pngjs": "^7.0.0",
+    "socket.io": "^4.8.3",
+    "uuid": "^14.0.1"
+  }
+}
