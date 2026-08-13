@@ -40,12 +40,13 @@ app.use((req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || process.env.ALWAYSDATA_HTTPD_PORT || 3000;
+const HOST = process.env.IP || process.env.ALWAYSDATA_HTTPD_IP || '0.0.0.0';
 
-server.listen(PORT, () => {
+server.listen(PORT, HOST, () => {
   console.log(`=======================================================`);
   console.log(`🎮 لعبة الحلم والبرق والنار تعمل الآن على البورت ${PORT}`);
-  console.log(`🔗 رابط اللعبة: http://localhost:${PORT}`);
+  console.log(`🔗 Host: ${HOST}:${PORT}`);
   console.log(`=======================================================`);
 
   // Start authoritative game loop
