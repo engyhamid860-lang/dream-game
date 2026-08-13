@@ -40,7 +40,7 @@ app.use((req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || process.env.ALWAYSDATA_HTTPD_PORT || 8100;
 
 server.listen(PORT, () => {
   console.log(`=======================================================`);
