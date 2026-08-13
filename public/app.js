@@ -4,8 +4,18 @@ function initApp() {
   if (appInitialized) return;
   appInitialized = true;
 
-  // Initialize Socket.IO
-  const socket = io({ query: { userId: 'user_me' } });
+  // Parse URL parameters for real user authentication & wallet balance
+  const urlParams = new URLSearchParams(window.location.search);
+  const realUserId = urlParams.get('userId') || urlParams.get('user_id') || 'user_me';
+  const realUserName = urlParams.get('userName') || urlParams.get('username') || urlParams.get('name') || '';
+  const realUserBalance = urlParams.get('balance') || urlParams.get('user_balance') || '';
+
+  // Initialize Socket.IO with real user query params
+  const socketQuery = { userId: realUserId };
+  if (realUserName) socketQuery.userName = realUserName;
+  if (realUserBalance) socketQuery.balance = realUserBalance;
+
+  const socket = io({ query: socketQuery });
 
   // Safe DOM helpers to prevent client-side crashes on missing elements
   function safeSetText(el, text) {

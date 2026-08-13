@@ -38,7 +38,6 @@ class GameEngine extends EventEmitter {
       fire: 19
     };
 
-    this.botTimer = null;
     this.forcedNextWinner = null;
   }
 
@@ -61,36 +60,6 @@ class GameEngine extends EventEmitter {
 
     if (this.timerInterval) clearInterval(this.timerInterval);
     this.timerInterval = setInterval(() => this.tick(), 1000);
-
-    // Schedule bot bets to simulate live voice chat room activity
-    this.scheduleBotBets();
-  }
-
-  scheduleBotBets() {
-    if (this.botTimer) clearInterval(this.botTimer);
-    const botUsers = [
-      { id: 'user_ahmed', name: 'أحمد', avatar: '👨‍🦱' },
-      { id: 'user_mohamed', name: 'محمد', avatar: '🧔' },
-      { id: 'user_ali', name: 'علي', avatar: '👨‍<ctrl42>' },
-      { id: 'user_sara', name: 'سارة', avatar: '👩' }
-    ];
-
-    const characters = ['dream', 'lightning', 'fire'];
-    const amounts = [500, 1000, 10000];
-
-    this.botTimer = setInterval(() => {
-      if (this.status !== 'BETTING' || this.timer <= 2) return;
-      if (Math.random() > 0.4) {
-        const bot = botUsers[Math.floor(Math.random() * botUsers.length)];
-        const char = characters[Math.floor(Math.random() * characters.length)];
-        const amt = amounts[Math.floor(Math.random() * amounts.length)];
-        try {
-          this.placeBet(bot.id, char, amt, bot.name, bot.avatar);
-        } catch (e) {
-          // Ignore bot balance errors if any
-        }
-      }
-    }, 3000);
   }
 
   tick() {
@@ -99,7 +68,6 @@ class GameEngine extends EventEmitter {
       this.emit('countdown_updated', { roundId: this.roundId, timer: this.timer });
     } else {
       clearInterval(this.timerInterval);
-      if (this.botTimer) clearInterval(this.botTimer);
       this.closeBetting();
     }
   }

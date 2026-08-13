@@ -1,8 +1,15 @@
 const gameEngine = require('../engine/gameEngine');
+const walletEngine = require('../engine/walletEngine');
 
 function initSockets(io) {
   io.on('connection', (socket) => {
-    const userId = socket.handshake.query.userId || 'user_me';
+    const userId = socket.handshake.query.userId || socket.handshake.query.user_id || 'user_me';
+    const userName = socket.handshake.query.userName || socket.handshake.query.username || socket.handshake.query.name || null;
+    const initialBalance = socket.handshake.query.balance ? parseInt(socket.handshake.query.balance) : null;
+
+    // Register & sync real user wallet
+    walletEngine.initRealUser(userId, userName, initialBalance);
+
     console.log(`🔌 لاعب متصل باللعبة: ${socket.id} (المستخدم: ${userId})`);
 
     // Join room for real-time game broadcasts

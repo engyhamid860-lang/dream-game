@@ -2,27 +2,36 @@ const { v4: uuidv4 } = require('uuid');
 
 class WalletEngine {
   constructor() {
-    // Initial demo players with balances
+    // Real connected players balances
     this.balances = new Map([
-      ['user_me', { id: 'user_me', name: 'أنت (اللاعب)', avatar: '👤', balance: 150000 }],
-      ['user_ahmed', { id: 'user_ahmed', name: 'أحمد', avatar: '👨‍🦱', balance: 500000 }],
-      ['user_mohamed', { id: 'user_mohamed', name: 'محمد', avatar: '🧔', balance: 350000 }],
-      ['user_ali', { id: 'user_ali', name: 'علي', avatar: '👨‍🦰', balance: 420000 }],
-      ['user_sara', { id: 'user_sara', name: 'سارة', avatar: '👩', balance: 280000 }]
+      ['user_me', { id: 'user_me', name: 'أنت (اللاعب)', avatar: '👤', balance: 150000 }]
     ]);
 
     // Ledger to ensure idempotency and transaction audit
     this.transactions = new Map(); // key -> transaction obj
   }
 
-  getUser(userId) {
+  initRealUser(userId, name = null, initialBalance = null) {
     if (!this.balances.has(userId)) {
       this.balances.set(userId, {
         id: userId,
-        name: `لاعب ${userId.slice(0, 4)}`,
+        name: name || `لاعب ${userId.slice(-4)}`,
         avatar: '👤',
-        balance: 100000
+        balance: (initialBalance !== null && !isNaN(initialBalance) && initialBalance >= 0) ? initialBalance : 150000
       });
+    } else {
+      const user = this.balances.get(userId);
+      if (initialBalance !== null && !isNaN(initialBalance) && initialBalance >= 0) {
+        user.balance = initialBalance;
+      }
+      if (name) user.name = name;
+    }
+    return this.balances.get(userId);
+  }
+
+  getUser(userId) {
+    if (!this.balances.has(userId)) {
+      return this.initRealUser(userId);
     }
     return this.balances.get(userId);
   }
