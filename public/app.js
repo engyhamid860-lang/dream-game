@@ -289,22 +289,22 @@ function initApp() {
     const displayTimer = (liveTimerVal !== null && liveTimerVal !== undefined) ? liveTimerVal : currentLiveTimer;
     const isWarning = displayTimer <= 3 && displayTimer > 0;
 
-    // Medallion Outer Bevel Ring (توسط دقيق 100% داخل الحلقة الذهبية الصغيرة للإطار)
+    // Medallion Outer Bevel Ring (تكبير دائرة العد التنازلي المركزية بوضوح ملكي فخم)
     wheelCtx.save();
     wheelCtx.beginPath();
-    wheelCtx.arc(centerX, centerY, 38, 0, Math.PI * 2);
+    wheelCtx.arc(centerX, centerY, 50, 0, Math.PI * 2);
     wheelCtx.fillStyle = '#1e1b4b';
     wheelCtx.fill();
     wheelCtx.strokeStyle = rimGrad;
-    wheelCtx.lineWidth = 4;
+    wheelCtx.lineWidth = 5;
     wheelCtx.shadowColor = '#000000';
-    wheelCtx.shadowBlur = 10;
+    wheelCtx.shadowBlur = 12;
     wheelCtx.stroke();
 
     // Inner Medallion Core Circle
     wheelCtx.beginPath();
-    wheelCtx.arc(centerX, centerY, 30, 0, Math.PI * 2);
-    const coreGrad = wheelCtx.createRadialGradient(centerX, centerY, 4, centerX, centerY, 30);
+    wheelCtx.arc(centerX, centerY, 40, 0, Math.PI * 2);
+    const coreGrad = wheelCtx.createRadialGradient(centerX, centerY, 5, centerX, centerY, 40);
     if (isWarning) {
       coreGrad.addColorStop(0, '#ef4444');
       coreGrad.addColorStop(1, '#7f1d1d');
@@ -315,7 +315,7 @@ function initApp() {
     wheelCtx.fillStyle = coreGrad;
     wheelCtx.fill();
     wheelCtx.strokeStyle = isWarning ? '#fca5a5' : '#ffd700';
-    wheelCtx.lineWidth = 2.2;
+    wheelCtx.lineWidth = 2.8;
     wheelCtx.stroke();
 
     // Timer / Symbol Text inside Medallion
@@ -324,16 +324,16 @@ function initApp() {
 
     if (displayTimer !== null && displayTimer !== undefined && displayTimer > 0) {
       const formatted = displayTimer < 10 ? `0${displayTimer}` : `${displayTimer}`;
-      wheelCtx.font = '900 23px Outfit, Cairo, sans-serif';
+      wheelCtx.font = '900 30px Outfit, Cairo, sans-serif';
       wheelCtx.fillStyle = isWarning ? '#ffffff' : '#ffd700';
       wheelCtx.shadowColor = isWarning ? '#ef4444' : '#ffd700';
-      wheelCtx.shadowBlur = 8;
+      wheelCtx.shadowBlur = 10;
       wheelCtx.fillText(formatted, centerX, centerY + 1);
     } else {
-      wheelCtx.font = '900 14px Cairo, sans-serif';
+      wheelCtx.font = '900 18px Cairo, sans-serif';
       wheelCtx.fillStyle = '#ffd700';
       wheelCtx.shadowColor = '#ffd700';
-      wheelCtx.shadowBlur = 6;
+      wheelCtx.shadowBlur = 8;
       wheelCtx.fillText('★ DL ★', centerX, centerY);
     }
     wheelCtx.restore();
