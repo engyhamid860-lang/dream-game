@@ -1,6 +1,16 @@
 const EventEmitter = require('events');
 const walletEngine = require('./walletEngine');
 const { v4: uuidv4 } = require('uuid');
+const fs = require('fs');
+const path = require('path');
+
+const layoutFilePath = path.join(__dirname, '..', 'data', 'wheelLayout.json');
+
+// Ensure data folder exists
+const dataDir = path.dirname(layoutFilePath);
+if (!fs.existsSync(dataDir)) {
+  fs.mkdirSync(dataDir, { recursive: true });
+}
 
 class GameEngine extends EventEmitter {
   constructor() {
