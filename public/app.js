@@ -292,19 +292,19 @@ function initApp() {
     // Medallion Outer Bevel Ring (توسط دقيق 100% داخل الحلقة الذهبية الصغيرة للإطار)
     wheelCtx.save();
     wheelCtx.beginPath();
-    wheelCtx.arc(centerX, centerY, 32, 0, Math.PI * 2);
+    wheelCtx.arc(centerX, centerY, 25, 0, Math.PI * 2);
     wheelCtx.fillStyle = '#1e1b4b';
     wheelCtx.fill();
     wheelCtx.strokeStyle = rimGrad;
-    wheelCtx.lineWidth = 3.5;
+    wheelCtx.lineWidth = 3;
     wheelCtx.shadowColor = '#000000';
-    wheelCtx.shadowBlur = 8;
+    wheelCtx.shadowBlur = 6;
     wheelCtx.stroke();
 
     // Inner Medallion Core Circle
     wheelCtx.beginPath();
-    wheelCtx.arc(centerX, centerY, 25, 0, Math.PI * 2);
-    const coreGrad = wheelCtx.createRadialGradient(centerX, centerY, 5, centerX, centerY, 25);
+    wheelCtx.arc(centerX, centerY, 19, 0, Math.PI * 2);
+    const coreGrad = wheelCtx.createRadialGradient(centerX, centerY, 3, centerX, centerY, 19);
     if (isWarning) {
       coreGrad.addColorStop(0, '#ef4444');
       coreGrad.addColorStop(1, '#7f1d1d');
@@ -315,7 +315,7 @@ function initApp() {
     wheelCtx.fillStyle = coreGrad;
     wheelCtx.fill();
     wheelCtx.strokeStyle = isWarning ? '#fca5a5' : '#ffd700';
-    wheelCtx.lineWidth = 2;
+    wheelCtx.lineWidth = 1.8;
     wheelCtx.stroke();
 
     // Timer / Symbol Text inside Medallion
@@ -324,16 +324,16 @@ function initApp() {
 
     if (displayTimer !== null && displayTimer !== undefined && displayTimer > 0) {
       const formatted = displayTimer < 10 ? `0${displayTimer}` : `${displayTimer}`;
-      wheelCtx.font = '900 20px Outfit, Cairo, sans-serif';
+      wheelCtx.font = '900 16px Outfit, Cairo, sans-serif';
       wheelCtx.fillStyle = isWarning ? '#ffffff' : '#ffd700';
       wheelCtx.shadowColor = isWarning ? '#ef4444' : '#ffd700';
-      wheelCtx.shadowBlur = 8;
+      wheelCtx.shadowBlur = 6;
       wheelCtx.fillText(formatted, centerX, centerY + 1);
     } else {
-      wheelCtx.font = '900 13px Cairo, sans-serif';
+      wheelCtx.font = '900 11px Cairo, sans-serif';
       wheelCtx.fillStyle = '#ffd700';
       wheelCtx.shadowColor = '#ffd700';
-      wheelCtx.shadowBlur = 6;
+      wheelCtx.shadowBlur = 5;
       wheelCtx.fillText('★ DL ★', centerX, centerY);
     }
     wheelCtx.restore();
