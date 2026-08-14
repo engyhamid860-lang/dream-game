@@ -237,16 +237,23 @@ router.post('/admin/user-balance', (req, res) => {
 // Admin Update Wheel Layout Configuration (حجم العجلة، الصورة، العد التنازلي، التمركز)
 router.post('/admin/layout', (req, res) => {
   const { 
-    canvasSize, canvasTop, frameSize, frameTop, frameLeft, frameUrl,
+    canvasSize, canvasTop, canvasLeft, frameSize, frameWidth, frameHeight, frameTop, frameLeft, frameUrl,
     medallionRadius, sliceGap, sliceFontSize, 
     gapWheelResults, gapResultsCards, gapCardsChips,
-    repeatBtnRight, repeatBtnBottom, slices 
+    repeatBtnRight, repeatBtnBottom,
+    headerTop, headerRight, headerLeft,
+    spinDuration, showDeluxePointer, deluxePointerScale, winningFlash, slices 
   } = req.body;
   
   const newLayout = {};
   if (canvasSize !== undefined) newLayout.canvasSize = parseFloat(canvasSize);
   if (canvasTop !== undefined) newLayout.canvasTop = parseFloat(canvasTop);
+  if (canvasLeft !== undefined) newLayout.canvasLeft = parseFloat(canvasLeft);
+  
   if (frameSize !== undefined) newLayout.frameSize = parseFloat(frameSize);
+  if (frameWidth !== undefined) newLayout.frameWidth = parseFloat(frameWidth);
+  if (frameHeight !== undefined) newLayout.frameHeight = parseFloat(frameHeight);
+  
   if (frameTop !== undefined) newLayout.frameTop = parseFloat(frameTop);
   if (frameLeft !== undefined) newLayout.frameLeft = parseFloat(frameLeft);
   if (frameUrl !== undefined) newLayout.frameUrl = frameUrl;
@@ -259,6 +266,15 @@ router.post('/admin/layout', (req, res) => {
   if (gapCardsChips !== undefined) newLayout.gapCardsChips = parseFloat(gapCardsChips);
   if (repeatBtnRight !== undefined) newLayout.repeatBtnRight = parseFloat(repeatBtnRight);
   if (repeatBtnBottom !== undefined) newLayout.repeatBtnBottom = parseFloat(repeatBtnBottom);
+  
+  if (headerTop !== undefined) newLayout.headerTop = parseFloat(headerTop);
+  if (headerRight !== undefined) newLayout.headerRight = parseFloat(headerRight);
+  if (headerLeft !== undefined) newLayout.headerLeft = parseFloat(headerLeft);
+  
+  if (spinDuration !== undefined) newLayout.spinDuration = parseFloat(spinDuration);
+  if (showDeluxePointer !== undefined) newLayout.showDeluxePointer = showDeluxePointer === true || showDeluxePointer === 'true';
+  if (deluxePointerScale !== undefined) newLayout.deluxePointerScale = parseFloat(deluxePointerScale);
+  if (winningFlash !== undefined) newLayout.winningFlash = winningFlash === true || winningFlash === 'true';
   
   if (slices !== undefined && Array.isArray(slices)) newLayout.slices = slices;
 

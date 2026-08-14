@@ -436,17 +436,37 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
           <div class="form-group">
             <label>حجم العجلة الدوارة (<span id="valCanvasSize">60.5</span>%):</label>
-            <input type="range" id="rngCanvasSize" min="40" max="90" step="0.5" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+            <input type="range" id="rngCanvasSize" min="20" max="95" step="0.5" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
           </div>
 
           <div class="form-group">
             <label>تمركز العجلة عمودياً (<span id="valCanvasTop">44.3</span>%):</label>
-            <input type="range" id="rngCanvasTop" min="38" max="52" step="0.1" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+            <input type="range" id="rngCanvasTop" min="38" max="55" step="0.1" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
           </div>
 
           <div class="form-group">
-            <label>حجم إطار الصورة (<span id="valFrameSize">100</span>%):</label>
-            <input type="range" id="rngFrameSize" min="80" max="150" step="1" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+            <label>تمركز العجلة أفقياً (<span id="valCanvasLeft">50.0</span>%):</label>
+            <input type="range" id="rngCanvasLeft" min="30" max="70" step="0.1" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+          </div>
+
+          <div class="form-group">
+            <label>عرض إطار الصورة (أفقياً) (<span id="valFrameWidth">100</span>%):</label>
+            <input type="range" id="rngFrameWidth" min="70" max="150" step="0.5" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+          </div>
+
+          <div class="form-group">
+            <label>ارتفاع إطار الصورة (عمودياً) (<span id="valFrameHeight">100</span>%):</label>
+            <input type="range" id="rngFrameHeight" min="70" max="150" step="0.5" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+          </div>
+
+          <div class="form-group">
+            <label>إزاحة الإطار عمودياً (<span id="valFrameTop">0</span>px):</label>
+            <input type="range" id="rngFrameTop" min="-150" max="150" step="0.5" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+          </div>
+
+          <div class="form-group">
+            <label>إزاحة الإطار أفقياً (<span id="valFrameLeft">0</span>px):</label>
+            <input type="range" id="rngFrameLeft" min="-150" max="150" step="0.5" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
           </div>
 
           <div class="form-group">
@@ -455,48 +475,77 @@
           </div>
 
           <div class="form-group">
-            <label>إزاحة الإطار عمودياً (<span id="valFrameTop">0</span>px):</label>
-            <input type="range" id="rngFrameTop" min="-100" max="100" step="0.5" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
-          </div>
-
-          <div class="form-group">
-            <label>إزاحة الإطار أفقياً (<span id="valFrameLeft">0</span>px):</label>
-            <input type="range" id="rngFrameLeft" min="-100" max="100" step="0.5" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
-          </div>
-
-          <div class="form-group">
-            <label>حجم الأيقونة داخل القطاع (<span id="valSliceFontSize">16</span>):</label>
-            <input type="range" id="rngSliceFontSize" min="8" max="35" step="0.5" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+            <label>حجم الأيقونة/القطاع (<span id="valSliceFontSize">16</span>):</label>
+            <input type="range" id="rngSliceFontSize" min="0" max="45" step="0.5" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
           </div>
 
           <div class="form-group">
             <label>حجم الفراغات بين القطاعات (<span id="valSliceGap">6.8</span>px):</label>
-            <input type="range" id="rngSliceGap" min="0" max="20" step="0.2" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+            <input type="range" id="rngSliceGap" min="0" max="25" step="0.2" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
           </div>
 
           <div class="form-group">
             <label>المسافة بين العجلة وشريط النتائج (<span id="valGapWheelResults">-16</span>px):</label>
-            <input type="range" id="rngGapWheelResults" min="-50" max="30" step="1" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+            <input type="range" id="rngGapWheelResults" min="-120" max="60" step="1" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
           </div>
 
           <div class="form-group">
             <label>المسافة بين شريط النتائج والكروت (<span id="valGapResultsCards">2</span>px):</label>
-            <input type="range" id="rngGapResultsCards" min="-30" max="30" step="1" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+            <input type="range" id="rngGapResultsCards" min="-80" max="60" step="1" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
           </div>
 
           <div class="form-group">
             <label>المسافة بين الكروت والشريط السفلي (<span id="valGapCardsChips">2</span>px):</label>
-            <input type="range" id="rngGapCardsChips" min="-30" max="30" step="1" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+            <input type="range" id="rngGapCardsChips" min="-80" max="60" step="1" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
           </div>
 
           <div class="form-group">
             <label>موضع زر كرر من اليمين (<span id="valRepeatBtnRight">14</span>px):</label>
-            <input type="range" id="rngRepeatBtnRight" min="0" max="150" step="1" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+            <input type="range" id="rngRepeatBtnRight" min="-50" max="250" step="1" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
           </div>
 
           <div class="form-group">
             <label>موضع زر كرر من الأسفل (<span id="valRepeatBtnBottom">28</span>px):</label>
-            <input type="range" id="rngRepeatBtnBottom" min="0" max="200" step="1" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+            <input type="range" id="rngRepeatBtnBottom" min="0" max="250" step="1" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+          </div>
+
+          <div class="form-group">
+            <label>موضع الأزرار العلوية عمودياً (<span id="valHeaderTop">10</span>px):</label>
+            <input type="range" id="rngHeaderTop" min="-30" max="120" step="1" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+          </div>
+
+          <div class="form-group">
+            <label>موضع أزرار السجل من اليمين (<span id="valHeaderRight">12</span>px):</label>
+            <input type="range" id="rngHeaderRight" min="-30" max="120" step="1" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+          </div>
+
+          <div class="form-group">
+            <label>موضع الجولة من اليسار (<span id="valHeaderLeft">12</span>px):</label>
+            <input type="range" id="rngHeaderLeft" min="-30" max="120" step="1" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+          </div>
+
+          <div class="form-group">
+            <label>سرعة/مدة دوران العجلة (<span id="valSpinDuration">2.5</span> ثانية):</label>
+            <input type="range" id="rngSpinDuration" min="1.0" max="6.0" step="0.1" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+          </div>
+
+          <div class="form-group">
+            <label>حجم السهم المؤشر الفاخر (<span id="valDeluxePointerScale">1.0</span>):</label>
+            <input type="range" id="rngDeluxePointerScale" min="0.5" max="2.5" step="0.05" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+          </div>
+
+          <div class="form-group" style="display: flex; align-items: center; gap: 10px; padding-top: 25px;">
+            <label style="margin: 0; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="chkShowDeluxePointer" style="width: 18px; height: 18px;" onchange="updateWheelLayoutLive()">
+              🎯 تفعيل السهم المؤشر الفاخر
+            </label>
+          </div>
+
+          <div class="form-group" style="display: flex; align-items: center; gap: 10px; padding-top: 25px;">
+            <label style="margin: 0; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="chkWinningFlash" checked style="width: 18px; height: 18px;" onchange="updateWheelLayoutLive()">
+              ✨ تفعيل وميض الفوز للقطاع الفائز
+            </label>
           </div>
         </div>
 
@@ -817,11 +866,14 @@ import { WebView } from 'react-native-webview';
     function updateWheelLayoutLive() {
       const canvasSize = parseFloat(document.getElementById('rngCanvasSize').value);
       const canvasTop = parseFloat(document.getElementById('rngCanvasTop').value);
-      const frameSize = parseFloat(document.getElementById('rngFrameSize').value);
-      const medallionRadius = parseFloat(document.getElementById('rngMedallionRadius').value);
+      const canvasLeft = parseFloat(document.getElementById('rngCanvasLeft').value);
+      
+      const frameWidth = parseFloat(document.getElementById('rngFrameWidth').value);
+      const frameHeight = parseFloat(document.getElementById('rngFrameHeight').value);
       
       const frameTop = parseFloat(document.getElementById('rngFrameTop').value);
       const frameLeft = parseFloat(document.getElementById('rngFrameLeft').value);
+      const medallionRadius = parseFloat(document.getElementById('rngMedallionRadius').value);
       const sliceFontSize = parseFloat(document.getElementById('rngSliceFontSize').value);
       const sliceGap = parseFloat(document.getElementById('rngSliceGap').value);
       
@@ -830,15 +882,28 @@ import { WebView } from 'react-native-webview';
       const gapCardsChips = parseFloat(document.getElementById('rngGapCardsChips').value);
       const repeatBtnRight = parseFloat(document.getElementById('rngRepeatBtnRight').value);
       const repeatBtnBottom = parseFloat(document.getElementById('rngRepeatBtnBottom').value);
+      
+      const headerTop = parseFloat(document.getElementById('rngHeaderTop').value);
+      const headerRight = parseFloat(document.getElementById('rngHeaderRight').value);
+      const headerLeft = parseFloat(document.getElementById('rngHeaderLeft').value);
+      
+      const spinDuration = parseFloat(document.getElementById('rngSpinDuration').value);
+      const deluxePointerScale = parseFloat(document.getElementById('rngDeluxePointerScale').value);
+      
+      const showDeluxePointer = document.getElementById('chkShowDeluxePointer').checked;
+      const winningFlash = document.getElementById('chkWinningFlash').checked;
 
       // Update values indicators
       document.getElementById('valCanvasSize').textContent = canvasSize;
       document.getElementById('valCanvasTop').textContent = canvasTop;
-      document.getElementById('valFrameSize').textContent = frameSize;
-      document.getElementById('valMedallionRadius').textContent = medallionRadius;
+      document.getElementById('valCanvasLeft').textContent = canvasLeft;
+      
+      document.getElementById('valFrameWidth').textContent = frameWidth;
+      document.getElementById('valFrameHeight').textContent = frameHeight;
       
       document.getElementById('valFrameTop').textContent = frameTop;
       document.getElementById('valFrameLeft').textContent = frameLeft;
+      document.getElementById('valMedallionRadius').textContent = medallionRadius;
       document.getElementById('valSliceFontSize').textContent = sliceFontSize;
       document.getElementById('valSliceGap').textContent = sliceGap;
       
@@ -847,6 +912,13 @@ import { WebView } from 'react-native-webview';
       document.getElementById('valGapCardsChips').textContent = gapCardsChips;
       document.getElementById('valRepeatBtnRight').textContent = repeatBtnRight;
       document.getElementById('valRepeatBtnBottom').textContent = repeatBtnBottom;
+      
+      document.getElementById('valHeaderTop').textContent = headerTop;
+      document.getElementById('valHeaderRight').textContent = headerRight;
+      document.getElementById('valHeaderLeft').textContent = headerLeft;
+      
+      document.getElementById('valSpinDuration').textContent = spinDuration;
+      document.getElementById('valDeluxePointerScale').textContent = deluxePointerScale;
 
       fetch('/api/admin/layout', {
         method: 'POST',
@@ -854,7 +926,9 @@ import { WebView } from 'react-native-webview';
         body: JSON.stringify({ 
           canvasSize, 
           canvasTop, 
-          frameSize, 
+          canvasLeft,
+          frameWidth,
+          frameHeight,
           frameTop, 
           frameLeft, 
           medallionRadius,
@@ -865,6 +939,13 @@ import { WebView } from 'react-native-webview';
           gapCardsChips,
           repeatBtnRight,
           repeatBtnBottom,
+          headerTop,
+          headerRight,
+          headerLeft,
+          spinDuration,
+          showDeluxePointer,
+          deluxePointerScale,
+          winningFlash,
           slices: adminSlices
         })
       });
@@ -873,7 +954,9 @@ import { WebView } from 'react-native-webview';
     function resetWheelLayoutDefault() {
       document.getElementById('rngCanvasSize').value = 60.5;
       document.getElementById('rngCanvasTop').value = 44.3;
-      document.getElementById('rngFrameSize').value = 100.0;
+      document.getElementById('rngCanvasLeft').value = 50.0;
+      document.getElementById('rngFrameWidth').value = 100.0;
+      document.getElementById('rngFrameHeight').value = 100.0;
       document.getElementById('rngFrameTop').value = 0.0;
       document.getElementById('rngFrameLeft').value = 0.0;
       document.getElementById('rngMedallionRadius').value = 39;
@@ -885,6 +968,15 @@ import { WebView } from 'react-native-webview';
       document.getElementById('rngGapCardsChips').value = 2;
       document.getElementById('rngRepeatBtnRight').value = 14;
       document.getElementById('rngRepeatBtnBottom').value = 28;
+      
+      document.getElementById('rngHeaderTop').value = 10;
+      document.getElementById('rngHeaderRight').value = 12;
+      document.getElementById('rngHeaderLeft').value = 12;
+      
+      document.getElementById('rngSpinDuration').value = 2.5;
+      document.getElementById('rngDeluxePointerScale').value = 1.0;
+      document.getElementById('chkShowDeluxePointer').checked = false;
+      document.getElementById('chkWinningFlash').checked = true;
 
       adminSlices = [
         { char: 'dream' },
@@ -962,11 +1054,15 @@ import { WebView } from 'react-native-webview';
             
             document.getElementById('rngCanvasSize').value = layout.canvasSize || 60.5;
             document.getElementById('rngCanvasTop').value = layout.canvasTop || 44.3;
-            document.getElementById('rngFrameSize').value = layout.frameSize || 100.0;
+            document.getElementById('rngCanvasLeft').value = layout.canvasLeft || 50.0;
+            
+            document.getElementById('rngFrameWidth').value = layout.frameWidth || 100.0;
+            document.getElementById('rngFrameHeight').value = layout.frameHeight || 100.0;
+            
             document.getElementById('rngFrameTop').value = layout.frameTop || 0.0;
             document.getElementById('rngFrameLeft').value = layout.frameLeft || 0.0;
             document.getElementById('rngMedallionRadius').value = layout.medallionRadius || 39;
-            document.getElementById('rngSliceFontSize').value = layout.sliceFontSize || 16;
+            document.getElementById('rngSliceFontSize').value = layout.sliceFontSize !== undefined ? layout.sliceFontSize : 16;
             document.getElementById('rngSliceGap').value = layout.sliceGap || 6.8;
             
             document.getElementById('rngGapWheelResults').value = layout.gapWheelResults !== undefined ? layout.gapWheelResults : -16;
@@ -974,14 +1070,27 @@ import { WebView } from 'react-native-webview';
             document.getElementById('rngGapCardsChips').value = layout.gapCardsChips !== undefined ? layout.gapCardsChips : 2;
             document.getElementById('rngRepeatBtnRight').value = layout.repeatBtnRight !== undefined ? layout.repeatBtnRight : 14;
             document.getElementById('rngRepeatBtnBottom').value = layout.repeatBtnBottom !== undefined ? layout.repeatBtnBottom : 28;
+            
+            document.getElementById('rngHeaderTop').value = layout.headerTop !== undefined ? layout.headerTop : 10;
+            document.getElementById('rngHeaderRight').value = layout.headerRight !== undefined ? layout.headerRight : 12;
+            document.getElementById('rngHeaderLeft').value = layout.headerLeft !== undefined ? layout.headerLeft : 12;
+            
+            document.getElementById('rngSpinDuration').value = layout.spinDuration || 2.5;
+            document.getElementById('rngDeluxePointerScale').value = layout.deluxePointerScale || 1.0;
+            document.getElementById('chkShowDeluxePointer').checked = layout.showDeluxePointer === true;
+            document.getElementById('chkWinningFlash').checked = layout.winningFlash !== false;
 
             document.getElementById('valCanvasSize').textContent = layout.canvasSize || 60.5;
             document.getElementById('valCanvasTop').textContent = layout.canvasTop || 44.3;
-            document.getElementById('valFrameSize').textContent = layout.frameSize || 100.0;
+            document.getElementById('valCanvasLeft').textContent = layout.canvasLeft || 50.0;
+            
+            document.getElementById('valFrameWidth').textContent = layout.frameWidth || 100.0;
+            document.getElementById('valFrameHeight').textContent = layout.frameHeight || 100.0;
+            
             document.getElementById('valFrameTop').textContent = layout.frameTop || 0.0;
             document.getElementById('valFrameLeft').textContent = layout.frameLeft || 0.0;
             document.getElementById('valMedallionRadius').textContent = layout.medallionRadius || 39;
-            document.getElementById('valSliceFontSize').textContent = layout.sliceFontSize || 16;
+            document.getElementById('valSliceFontSize').textContent = layout.sliceFontSize !== undefined ? layout.sliceFontSize : 16;
             document.getElementById('valSliceGap').textContent = layout.sliceGap || 6.8;
             
             document.getElementById('valGapWheelResults').textContent = layout.gapWheelResults !== undefined ? layout.gapWheelResults : -16;
@@ -989,6 +1098,13 @@ import { WebView } from 'react-native-webview';
             document.getElementById('valGapCardsChips').textContent = layout.gapCardsChips !== undefined ? layout.gapCardsChips : 2;
             document.getElementById('valRepeatBtnRight').textContent = layout.repeatBtnRight !== undefined ? layout.repeatBtnRight : 14;
             document.getElementById('valRepeatBtnBottom').textContent = layout.repeatBtnBottom !== undefined ? layout.repeatBtnBottom : 28;
+            
+            document.getElementById('valHeaderTop').textContent = layout.headerTop !== undefined ? layout.headerTop : 10;
+            document.getElementById('valHeaderRight').textContent = layout.headerRight !== undefined ? layout.headerRight : 12;
+            document.getElementById('valHeaderLeft').textContent = layout.headerLeft !== undefined ? layout.headerLeft : 12;
+            
+            document.getElementById('valSpinDuration').textContent = layout.spinDuration || 2.5;
+            document.getElementById('valDeluxePointerScale').textContent = layout.deluxePointerScale || 1.0;
 
             adminSlices = layout.slices || [
               { char: 'dream' },

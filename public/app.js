@@ -127,7 +127,10 @@ function initApp() {
   let wheelLayout = {
     canvasSize: 60.5,
     canvasTop: 44.3,
+    canvasLeft: 50.0,
     frameSize: 100.0,
+    frameWidth: 100.0,
+    frameHeight: 100.0,
     frameTop: 0.0,
     frameLeft: 0.0,
     frameUrl: '/assets/wheel_frame.png',
@@ -138,7 +141,14 @@ function initApp() {
     gapResultsCards: 2,
     gapCardsChips: 2,
     repeatBtnRight: 14,
-    repeatBtnBottom: 28
+    repeatBtnBottom: 28,
+    headerTop: 10,
+    headerRight: 12,
+    headerLeft: 12,
+    spinDuration: 2.5,
+    showDeluxePointer: false,
+    deluxePointerScale: 1.0,
+    winningFlash: true
   };
 
   function applyWheelLayout(layout) {
@@ -162,6 +172,7 @@ function initApp() {
       wheelCanvas.style.width = `${wheelLayout.canvasSize}%`;
       wheelCanvas.style.height = `${wheelLayout.canvasSize}%`;
       wheelCanvas.style.top = `${wheelLayout.canvasTop}%`;
+      wheelCanvas.style.left = `${wheelLayout.canvasLeft || 50}%`;
     }
     
     // Apply frame image overlay styling
@@ -170,8 +181,10 @@ function initApp() {
       if (wheelLayout.frameUrl && frameOverlay.getAttribute('src') !== wheelLayout.frameUrl) {
         frameOverlay.src = wheelLayout.frameUrl;
       }
-      frameOverlay.style.width = `${wheelLayout.frameSize}%`;
-      frameOverlay.style.height = `${wheelLayout.frameSize}%`;
+      const widthPct = wheelLayout.frameWidth !== undefined ? wheelLayout.frameWidth : (wheelLayout.frameSize || 100);
+      const heightPct = wheelLayout.frameHeight !== undefined ? wheelLayout.frameHeight : (wheelLayout.frameSize || 100);
+      frameOverlay.style.width = `${widthPct}%`;
+      frameOverlay.style.height = `${heightPct}%`;
       frameOverlay.style.transform = `translate(calc(-50% + ${wheelLayout.frameLeft || 0}px), calc(-50% + ${wheelLayout.frameTop || 0}px))`;
     }
 
@@ -194,6 +207,23 @@ function initApp() {
     if (repeatBtn) {
       repeatBtn.style.right = `${wheelLayout.repeatBtnRight !== undefined ? wheelLayout.repeatBtnRight : 14}px`;
       repeatBtn.style.bottom = `${wheelLayout.repeatBtnBottom !== undefined ? wheelLayout.repeatBtnBottom : 28}px`;
+    }
+
+    // Apply header positioning
+    const topHeader = document.querySelector('.top-overlay-header');
+    if (topHeader) {
+      topHeader.style.paddingTop = `${wheelLayout.headerTop !== undefined ? wheelLayout.headerTop : 10}px`;
+      topHeader.style.paddingRight = `${wheelLayout.headerRight !== undefined ? wheelLayout.headerRight : 12}px`;
+      topHeader.style.paddingLeft = `${wheelLayout.headerLeft !== undefined ? wheelLayout.headerLeft : 12}px`;
+    }
+
+    // Apply deluxe pointer styling
+    const deluxePointer = document.getElementById('wheelPointer');
+    if (deluxePointer) {
+      const showPointer = wheelLayout.showDeluxePointer === true;
+      deluxePointer.style.setProperty('display', showPointer ? 'flex' : 'none', 'important');
+      const scale = wheelLayout.deluxePointerScale !== undefined ? wheelLayout.deluxePointerScale : 1.0;
+      deluxePointer.style.transform = `translateX(-50%) scale(${scale})`;
     }
     
     // Redraw immediately to apply sizes
@@ -266,7 +296,8 @@ function initApp() {
 
       // Sector Base Radial Gradient Background (الإضاءة تظهر فقط عند توقف السهم على القطاع الفائز)
       const grad = wheelCtx.createRadialGradient(centerX, centerY, 10, centerX, centerY, radius);
-      if (isWinnerLanded) {
+      const isFlashEnabled = wheelLayout.winningFlash !== false;
+      if (isWinnerLanded && isFlashEnabled) {
         // Intense Flash Glow ONLY for Winning Sector when wheel stops
         const flashIntensity = Math.abs(Math.sin(performance.now() / 120));
         grad.addColorStop(0, '#ffffff');
@@ -484,7 +515,7 @@ function initApp() {
     const totalRotation = fullSpins + delta;
     const finalRotation = startAngle + totalRotation;
 
-    const duration = 2500; // 2.5 seconds fast wheel spin
+    const duration = (wheelLayout.spinDuration !== undefined ? wheelLayout.spinDuration : 2.5) * 1000;
     const startTime = performance.now();
     let lastTickSlice = -1;
 
