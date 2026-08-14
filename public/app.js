@@ -130,9 +130,15 @@ function initApp() {
     frameSize: 100.0,
     frameTop: 0.0,
     frameLeft: 0.0,
+    frameUrl: '/assets/wheel_frame.png',
     medallionRadius: 39,
     sliceGap: 6.8,
-    sliceFontSize: 16
+    sliceFontSize: 16,
+    gapWheelResults: -16,
+    gapResultsCards: 2,
+    gapCardsChips: 2,
+    repeatBtnRight: 14,
+    repeatBtnBottom: 28
   };
 
   function applyWheelLayout(layout) {
@@ -161,9 +167,33 @@ function initApp() {
     // Apply frame image overlay styling
     const frameOverlay = document.getElementById('wheelFrameOverlay');
     if (frameOverlay) {
+      if (wheelLayout.frameUrl && frameOverlay.getAttribute('src') !== wheelLayout.frameUrl) {
+        frameOverlay.src = wheelLayout.frameUrl;
+      }
       frameOverlay.style.width = `${wheelLayout.frameSize}%`;
       frameOverlay.style.height = `${wheelLayout.frameSize}%`;
       frameOverlay.style.transform = `translate(calc(-50% + ${wheelLayout.frameLeft || 0}px), calc(-50% + ${wheelLayout.frameTop || 0}px))`;
+    }
+
+    // Apply layout gaps
+    const wheelWrapper = document.getElementById('wheelWrapper');
+    if (wheelWrapper) {
+      wheelWrapper.style.marginBottom = `${wheelLayout.gapWheelResults !== undefined ? wheelLayout.gapWheelResults : -16}px`;
+    }
+    const charGrid = document.querySelector('.characters-grid');
+    if (charGrid) {
+      charGrid.style.marginTop = `${wheelLayout.gapResultsCards !== undefined ? wheelLayout.gapResultsCards : 2}px`;
+    }
+    const chipSection = document.querySelector('.chip-selector-section');
+    if (chipSection) {
+      chipSection.style.marginTop = `${wheelLayout.gapCardsChips !== undefined ? wheelLayout.gapCardsChips : 2}px`;
+    }
+
+    // Apply repeat button position
+    const repeatBtn = document.getElementById('btnRepeatBet');
+    if (repeatBtn) {
+      repeatBtn.style.right = `${wheelLayout.repeatBtnRight !== undefined ? wheelLayout.repeatBtnRight : 14}px`;
+      repeatBtn.style.bottom = `${wheelLayout.repeatBtnBottom !== undefined ? wheelLayout.repeatBtnBottom : 28}px`;
     }
     
     // Redraw immediately to apply sizes

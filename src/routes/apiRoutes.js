@@ -1,7 +1,27 @@
 const express = require('express');
 const router = express.Router();
+const fs = require('fs');
+const path = require('path');
+const multer = require('multer');
 const gameEngine = require('../engine/gameEngine');
 const walletEngine = require('../engine/walletEngine');
+
+// Multer storage setup for local background and frame image uploads
+const uploadDir = path.join(__dirname, '..', '..', 'public', 'assets', 'uploads');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadDir);
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+  }
+});
+const upload = multer({ storage: storage });
 
 // 1. Get current round information
 router.get('/game/round/current', (req, res) => {
@@ -216,16 +236,30 @@ router.post('/admin/user-balance', (req, res) => {
 
 // Admin Update Wheel Layout Configuration (حجم العجلة، الصورة، العد التنازلي، التمركز)
 router.post('/admin/layout', (req, res) => {
-  const { canvasSize, canvasTop, frameSize, frameTop, frameLeft, medallionRadius, sliceGap, sliceFontSize, slices } = req.body;
+  const { 
+    canvasSize, canvasTop, frameSize, frameTop, frameLeft, frameUrl,
+    medallionRadius, sliceGap, sliceFontSize, 
+    gapWheelResults, gapResultsCards, gapCardsChips,
+    repeatBtnRight, repeatBtnBottom, slices 
+  } = req.body;
+  
   const newLayout = {};
   if (canvasSize !== undefined) newLayout.canvasSize = parseFloat(canvasSize);
   if (canvasTop !== undefined) newLayout.canvasTop = parseFloat(canvasTop);
   if (frameSize !== undefined) newLayout.frameSize = parseFloat(frameSize);
   if (frameTop !== undefined) newLayout.frameTop = parseFloat(frameTop);
   if (frameLeft !== undefined) newLayout.frameLeft = parseFloat(frameLeft);
+  if (frameUrl !== undefined) newLayout.frameUrl = frameUrl;
   if (medallionRadius !== undefined) newLayout.medallionRadius = parseFloat(medallionRadius);
   if (sliceGap !== undefined) newLayout.sliceGap = parseFloat(sliceGap);
   if (sliceFontSize !== undefined) newLayout.sliceFontSize = parseFloat(sliceFontSize);
+  
+  if (gapWheelResults !== undefined) newLayout.gapWheelResults = parseFloat(gapWheelResults);
+  if (gapResultsCards !== undefined) newLayout.gapResultsCards = parseFloat(gapResultsCards);
+  if (gapCardsChips !== undefined) newLayout.gapCardsChips = parseFloat(gapCardsChips);
+  if (repeatBtnRight !== undefined) newLayout.repeatBtnRight = parseFloat(repeatBtnRight);
+  if (repeatBtnBottom !== undefined) newLayout.repeatBtnBottom = parseFloat(repeatBtnBottom);
+  
   if (slices !== undefined && Array.isArray(slices)) newLayout.slices = slices;
 
   const updatedLayout = gameEngine.setWheelLayout(newLayout);
@@ -233,6 +267,71 @@ router.post('/admin/layout', (req, res) => {
     success: true,
     message: 'تم تحديث أبعاد ومقاسات العجلة والإطار بنجاح في الوقت الفعلي! 🎡',
     layout: updatedLayout
+  });
+});
+
+// Admin Upload Local Game Background
+router.post('/admin/upload/background', upload.single('bgImage'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ success: false, error: 'يرجى اختيار صورة الخلفية لرفعها' });
+  }
+  const fileUrl = `/assets/uploads/${req.file.filename}`;
+  gameEngine.setBackgroundUrl(fileUrl);
+  res.json({
+    success: true,
+    message: 'تم رفع صورة الخلفية وتطبيقها بنجاح! 🖼️',
+    bgUrl: fileUrl
+  });
+});
+
+// Admin Upload Local Wheel Frame Overlay
+router.post('/admin/upload/frame', upload.single('frameImage'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ success: false, error: 'يرجى اختيار صورة الإطار لرفعها' });
+  }
+  const fileUrl = `/assets/uploads/${req.file.filename}`;
+  const updatedLayout = gameEngine.setWheelLayout({ frameUrl: fileUrl });
+  res.json({
+    success: true,
+    message: 'تم رفع صورة الإطار وتطبيقها بنجاح! 🎡',
+    layout: updatedLayout
+  });
+});
+
+// Admin Scan Local Assets & Uploads lists (للاختيار المباشر دون الحاجة لكتابة روابط)
+router.get('/admin/assets', (req, res) => {
+  const assetsDir = path.join(__dirname, '..', '..', 'public', 'assets');
+  const uploadsDir = path.join(assetsDir, 'uploads');
+  
+  let baseFiles = [];
+  if (fs.existsSync(assetsDir)) {
+    baseFiles = fs.readdirSync(assetsDir).filter(f => fs.statSync(path.join(assetsDir, f)).isFile());
+  }
+
+  let uploadedFiles = [];
+  if (fs.existsSync(uploadsDir)) {
+    uploadedFiles = fs.readdirSync(uploadsDir).filter(f => fs.statSync(path.join(uploadsDir, f)).isFile());
+  }
+
+  // Group default assets and uploads
+  const frames = [
+    '/assets/wheel_frame.png',
+    '/assets/wheel_frame_fantasy.png',
+    ...uploadedFiles.filter(f => f.startsWith('frameImage-')).map(f => `/assets/uploads/${f}`)
+  ];
+
+  const backgrounds = [
+    '/assets/game_bg.jpg',
+    '/assets/dream.jpg',
+    '/assets/lightning.jpg',
+    '/assets/fire.jpg',
+    ...uploadedFiles.filter(f => f.startsWith('bgImage-')).map(f => `/assets/uploads/${f}`)
+  ];
+
+  res.json({
+    success: true,
+    frames,
+    backgrounds
   });
 });
 

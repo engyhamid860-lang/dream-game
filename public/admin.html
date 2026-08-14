@@ -381,21 +381,48 @@
         </div>
       </div>
 
-      <!-- Card 4: Dynamic Game Background Management -->
+      <!-- Card 4: Local Game Background & Frame Asset Manager -->
       <div class="card">
-        <h2>🖼️ تغيير خلفية اللعبة في الوقت الفعلي</h2>
-        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;">
-          تغيير صورة الخلفية فورياً لجميع اللاعبين المتصلين:
+        <h2>🖼️ مكتبة الصور وإطارات العجلة والرفع المحلي المباشر</h2>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;">
+          اختر الخلفيات أو إطارات العجلات مباشرة من مكتبة الملفات المحلية، أو قم برفع صور جديدة فوراً:
         </p>
-        <div class="form-group">
-          <label>رابط الصورة أو مسار الملف المحفوظ:</label>
-          <input type="text" id="txtBgUrl" class="form-control" value="/assets/game_bg.jpg" placeholder="https://example.com/bg.jpg أو /assets/game_bg.jpg">
+
+        <!-- Background Management Section -->
+        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 12px; margin-bottom: 15px;">
+          <h3 style="color: var(--gold); font-size: 0.95rem; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">🖼️ إدارة خلفية اللعبة</h3>
+          
+          <div class="form-group">
+            <label>اختر صورة الخلفية من المكتبة:</label>
+            <select id="selBgImage" class="form-control" onchange="selectBgPresetLocal()"></select>
+          </div>
+
+          <div class="form-group" style="margin-top: 10px;">
+            <label>أو ارفع صورة خلفية جديدة من جهازك:</label>
+            <div style="display: flex; gap: 10px;">
+              <input type="file" id="fileBgImage" accept="image/*" class="form-control" style="height: auto; padding: 6px 12px;">
+              <button onclick="uploadBackgroundLocal()" style="padding: 8px 16px; border-radius: 8px; background: linear-gradient(135deg, #a855f7 0%, #581c87 100%); color: #fff; border: 1px solid var(--gold); cursor: pointer; font-weight: 700; font-size: 0.85rem; white-space: nowrap;">⚡ رفع وتطبيق</button>
+            </div>
+          </div>
         </div>
-        <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
-          <button style="padding: 6px 12px; font-size: 0.8rem; border-radius: 8px; background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); cursor: pointer;" onclick="setBgPreset('/assets/game_bg.jpg')">✨ الخلفية الملكية (افتراضي)</button>
-          <button style="padding: 6px 12px; font-size: 0.8rem; border-radius: 8px; background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); cursor: pointer;" onclick="setBgPreset('/assets/dream.jpg')">🌙 خلفية الحلم</button>
+
+        <!-- Frame Overlay Management Section -->
+        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 12px;">
+          <h3 style="color: var(--gold); font-size: 0.95rem; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">🎡 إدارة إطار صورة العجلة</h3>
+          
+          <div class="form-group">
+            <label>اختر إطار العجلة من المكتبة:</label>
+            <select id="selFrameImage" class="form-control" onchange="selectFramePresetLocal()"></select>
+          </div>
+
+          <div class="form-group" style="margin-top: 10px;">
+            <label>أو ارفع صورة إطار جديدة من جهازك (يفضل شفافة PNG):</label>
+            <div style="display: flex; gap: 10px;">
+              <input type="file" id="fileFrameImage" accept="image/*" class="form-control" style="height: auto; padding: 6px 12px;">
+              <button onclick="uploadFrameLocal()" style="padding: 8px 16px; border-radius: 8px; background: linear-gradient(135deg, #a855f7 0%, #581c87 100%); color: #fff; border: 1px solid var(--gold); cursor: pointer; font-weight: 700; font-size: 0.85rem; white-space: nowrap;">⚡ رفع وتطبيق</button>
+            </div>
+          </div>
         </div>
-        <button class="btn-submit" onclick="updateGameBackground()">🖼️ تطبيق وتحديث الخلفية لجميع اللاعبين الان</button>
       </div>
 
       <!-- Card 5: Live Wheel & Frame Layout Customizer (لوحة تحكم حجم وأبعاد العجلة والإطار بالبث المباشر) -->
@@ -445,6 +472,31 @@
           <div class="form-group">
             <label>حجم الفراغات بين القطاعات (<span id="valSliceGap">6.8</span>px):</label>
             <input type="range" id="rngSliceGap" min="0" max="20" step="0.2" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+          </div>
+
+          <div class="form-group">
+            <label>المسافة بين العجلة وشريط النتائج (<span id="valGapWheelResults">-16</span>px):</label>
+            <input type="range" id="rngGapWheelResults" min="-50" max="30" step="1" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+          </div>
+
+          <div class="form-group">
+            <label>المسافة بين شريط النتائج والكروت (<span id="valGapResultsCards">2</span>px):</label>
+            <input type="range" id="rngGapResultsCards" min="-30" max="30" step="1" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+          </div>
+
+          <div class="form-group">
+            <label>المسافة بين الكروت والشريط السفلي (<span id="valGapCardsChips">2</span>px):</label>
+            <input type="range" id="rngGapCardsChips" min="-30" max="30" step="1" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+          </div>
+
+          <div class="form-group">
+            <label>موضع زر كرر من اليمين (<span id="valRepeatBtnRight">14</span>px):</label>
+            <input type="range" id="rngRepeatBtnRight" min="0" max="150" step="1" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+          </div>
+
+          <div class="form-group">
+            <label>موضع زر كرر من الأسفل (<span id="valRepeatBtnBottom">28</span>px):</label>
+            <input type="range" id="rngRepeatBtnBottom" min="0" max="200" step="1" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
           </div>
         </div>
 
@@ -642,10 +694,46 @@ import { WebView } from 'react-native-webview';
       document.getElementById('txtBgUrl').value = url;
     }
 
-    function updateGameBackground() {
-      const bgUrl = document.getElementById('txtBgUrl').value.trim();
-      if (!bgUrl) return;
+    // Local Assets & Image Uploads Management
+    function fetchAssetsLocal() {
+      fetch('/api/admin/assets')
+        .then(res => res.json())
+        .then(res => {
+          if (res.success) {
+            // Populate background images dropdown
+            const selBg = document.getElementById('selBgImage');
+            const currentBg = selBg.value;
+            selBg.innerHTML = '';
+            res.backgrounds.forEach(bg => {
+              const opt = document.createElement('option');
+              opt.value = bg;
+              opt.textContent = bg;
+              selBg.appendChild(opt);
+            });
+            if (currentBg && res.backgrounds.includes(currentBg)) {
+              selBg.value = currentBg;
+            }
 
+            // Populate frame images dropdown
+            const selFrame = document.getElementById('selFrameImage');
+            const currentFrame = selFrame.value;
+            selFrame.innerHTML = '';
+            res.frames.forEach(frame => {
+              const opt = document.createElement('option');
+              opt.value = frame;
+              opt.textContent = frame;
+              selFrame.appendChild(opt);
+            });
+            if (currentFrame && res.frames.includes(currentFrame)) {
+              selFrame.value = currentFrame;
+            }
+          }
+        });
+    }
+
+    function selectBgPresetLocal() {
+      const bgUrl = document.getElementById('selBgImage').value;
+      if (!bgUrl) return;
       fetch('/api/admin/background', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -654,9 +742,71 @@ import { WebView } from 'react-native-webview';
       .then(res => res.json())
       .then(res => {
         if (res.success) {
+          showToast('🖼️ تم تطبيق الخلفية بنجاح!');
+        }
+      });
+    }
+
+    function selectFramePresetLocal() {
+      const frameUrl = document.getElementById('selFrameImage').value;
+      if (!frameUrl) return;
+      fetch('/api/admin/layout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ frameUrl })
+      })
+      .then(res => res.json())
+      .then(res => {
+        if (res.success) {
+          showToast('🎡 تم تطبيق صورة الإطار بنجاح!');
+        }
+      });
+    }
+
+    function uploadBackgroundLocal() {
+      const fileInput = document.getElementById('fileBgImage');
+      if (fileInput.files.length === 0) {
+        showToast('⚠️ يرجى اختيار ملف صورة أولاً لرفعه');
+        return;
+      }
+      const formData = new FormData();
+      formData.append('bgImage', fileInput.files[0]);
+
+      fetch('/api/admin/upload/background', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(res => {
+        if (res.success) {
           showToast(res.message);
+          fetchAssetsLocal(); // Refresh list
         } else {
-          showToast(res.error || 'حدث خطأ أثناء تغيير الخلفية');
+          showToast(res.error || 'فشل رفع الخلفية');
+        }
+      });
+    }
+
+    function uploadFrameLocal() {
+      const fileInput = document.getElementById('fileFrameImage');
+      if (fileInput.files.length === 0) {
+        showToast('⚠️ يرجى اختيار ملف صورة إطار أولاً لرفعه');
+        return;
+      }
+      const formData = new FormData();
+      formData.append('frameImage', fileInput.files[0]);
+
+      fetch('/api/admin/upload/frame', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(res => {
+        if (res.success) {
+          showToast(res.message);
+          fetchAssetsLocal(); // Refresh list
+        } else {
+          showToast(res.error || 'فشل رفع الإطار');
         }
       });
     }
@@ -674,6 +824,12 @@ import { WebView } from 'react-native-webview';
       const frameLeft = parseFloat(document.getElementById('rngFrameLeft').value);
       const sliceFontSize = parseFloat(document.getElementById('rngSliceFontSize').value);
       const sliceGap = parseFloat(document.getElementById('rngSliceGap').value);
+      
+      const gapWheelResults = parseFloat(document.getElementById('rngGapWheelResults').value);
+      const gapResultsCards = parseFloat(document.getElementById('rngGapResultsCards').value);
+      const gapCardsChips = parseFloat(document.getElementById('rngGapCardsChips').value);
+      const repeatBtnRight = parseFloat(document.getElementById('rngRepeatBtnRight').value);
+      const repeatBtnBottom = parseFloat(document.getElementById('rngRepeatBtnBottom').value);
 
       // Update values indicators
       document.getElementById('valCanvasSize').textContent = canvasSize;
@@ -685,6 +841,12 @@ import { WebView } from 'react-native-webview';
       document.getElementById('valFrameLeft').textContent = frameLeft;
       document.getElementById('valSliceFontSize').textContent = sliceFontSize;
       document.getElementById('valSliceGap').textContent = sliceGap;
+      
+      document.getElementById('valGapWheelResults').textContent = gapWheelResults;
+      document.getElementById('valGapResultsCards').textContent = gapResultsCards;
+      document.getElementById('valGapCardsChips').textContent = gapCardsChips;
+      document.getElementById('valRepeatBtnRight').textContent = repeatBtnRight;
+      document.getElementById('valRepeatBtnBottom').textContent = repeatBtnBottom;
 
       fetch('/api/admin/layout', {
         method: 'POST',
@@ -698,6 +860,11 @@ import { WebView } from 'react-native-webview';
           medallionRadius,
           sliceGap,
           sliceFontSize,
+          gapWheelResults,
+          gapResultsCards,
+          gapCardsChips,
+          repeatBtnRight,
+          repeatBtnBottom,
           slices: adminSlices
         })
       });
@@ -712,6 +879,12 @@ import { WebView } from 'react-native-webview';
       document.getElementById('rngMedallionRadius').value = 39;
       document.getElementById('rngSliceFontSize').value = 16;
       document.getElementById('rngSliceGap').value = 6.8;
+      
+      document.getElementById('rngGapWheelResults').value = -16;
+      document.getElementById('rngGapResultsCards').value = 2;
+      document.getElementById('rngGapCardsChips').value = 2;
+      document.getElementById('rngRepeatBtnRight').value = 14;
+      document.getElementById('rngRepeatBtnBottom').value = 28;
 
       adminSlices = [
         { char: 'dream' },
@@ -795,6 +968,12 @@ import { WebView } from 'react-native-webview';
             document.getElementById('rngMedallionRadius').value = layout.medallionRadius || 39;
             document.getElementById('rngSliceFontSize').value = layout.sliceFontSize || 16;
             document.getElementById('rngSliceGap').value = layout.sliceGap || 6.8;
+            
+            document.getElementById('rngGapWheelResults').value = layout.gapWheelResults !== undefined ? layout.gapWheelResults : -16;
+            document.getElementById('rngGapResultsCards').value = layout.gapResultsCards !== undefined ? layout.gapResultsCards : 2;
+            document.getElementById('rngGapCardsChips').value = layout.gapCardsChips !== undefined ? layout.gapCardsChips : 2;
+            document.getElementById('rngRepeatBtnRight').value = layout.repeatBtnRight !== undefined ? layout.repeatBtnRight : 14;
+            document.getElementById('rngRepeatBtnBottom').value = layout.repeatBtnBottom !== undefined ? layout.repeatBtnBottom : 28;
 
             document.getElementById('valCanvasSize').textContent = layout.canvasSize || 60.5;
             document.getElementById('valCanvasTop').textContent = layout.canvasTop || 44.3;
@@ -804,6 +983,12 @@ import { WebView } from 'react-native-webview';
             document.getElementById('valMedallionRadius').textContent = layout.medallionRadius || 39;
             document.getElementById('valSliceFontSize').textContent = layout.sliceFontSize || 16;
             document.getElementById('valSliceGap').textContent = layout.sliceGap || 6.8;
+            
+            document.getElementById('valGapWheelResults').textContent = layout.gapWheelResults !== undefined ? layout.gapWheelResults : -16;
+            document.getElementById('valGapResultsCards').textContent = layout.gapResultsCards !== undefined ? layout.gapResultsCards : 2;
+            document.getElementById('valGapCardsChips').textContent = layout.gapCardsChips !== undefined ? layout.gapCardsChips : 2;
+            document.getElementById('valRepeatBtnRight').textContent = layout.repeatBtnRight !== undefined ? layout.repeatBtnRight : 14;
+            document.getElementById('valRepeatBtnBottom').textContent = layout.repeatBtnBottom !== undefined ? layout.repeatBtnBottom : 28;
 
             adminSlices = layout.slices || [
               { char: 'dream' },
@@ -815,6 +1000,12 @@ import { WebView } from 'react-native-webview';
             ];
 
             renderAdminSlices();
+            
+            // Set select values
+            const selBg = document.getElementById('selBgImage');
+            if (selBg) selBg.value = res.data.bgUrl || '/assets/game_bg.jpg';
+            const selFrame = document.getElementById('selFrameImage');
+            if (selFrame) selFrame.value = layout.frameUrl || '/assets/wheel_frame.png';
           }
         });
     }
@@ -823,6 +1014,7 @@ import { WebView } from 'react-native-webview';
     setInterval(fetchAdminOverview, 1000);
     fetchAdminOverview();
     initLayoutSliders(); // Initialize layout sliders on load
+    fetchAssetsLocal(); // Scan local library on load
   </script>
 </body>
 </html>
