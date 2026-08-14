@@ -42,7 +42,7 @@ class GameEngine extends EventEmitter {
     this.customBgUrl = '/assets/game_bg.jpg';
     
     // Layout customization options (حجم العجلة، الصورة، التمركز، والعد التنازلي)
-    this.wheelLayout = {
+    this.defaultLayout = {
       canvasSize: 60.5,
       canvasTop: 44.3,
       canvasLeft: 50.0,
@@ -76,18 +76,65 @@ class GameEngine extends EventEmitter {
         { char: 'lightning' }
       ]
     };
+
+    this.wheelLayout = { ...this.defaultLayout };
+    this.loadPersistedLayout();
+  }
+
+  loadPersistedLayout() {
+    try {
+      if (fs.existsSync(layoutFilePath)) {
+        const fileContent = fs.readFileSync(layoutFilePath, 'utf8');
+        const parsed = JSON.parse(fileContent);
+        this.wheelLayout = { ...this.defaultLayout, ...parsed };
+        if (parsed.customBgUrl) {
+          this.customBgUrl = parsed.customBgUrl;
+        }
+        console.log('✅ Loaded persisted layout settings from:', layoutFilePath);
+      }
+    } catch (e) {
+      console.error('⚠️ Failed to load persisted layout:', e);
+    }
+  }
+
+  saveLayoutToDisk() {
+    try {
+      const dataToSave = { ...this.wheelLayout, customBgUrl: this.customBgUrl };
+      fs.writeFileSync(layoutFilePath, JSON.stringify(dataToSave, null, 2), 'utf8');
+      console.log('💾 Layout configurations saved to:', layoutFilePath);
+    } catch (e) {
+      console.error('⚠️ Failed to save layout to disk:', e);
+    }
   }
 
   setWheelLayout(layout) {
     this.wheelLayout = { ...this.wheelLayout, ...layout };
+    this.saveLayoutToDisk();
     this.emit('layout_changed', this.wheelLayout);
     return this.wheelLayout;
   }
 
   setBackgroundUrl(url) {
     this.customBgUrl = url;
+    this.saveLayoutToDisk();
     this.emit('bg_changed', { bgUrl: this.customBgUrl });
     return this.customBgUrl;
+  }
+
+  resetWheelLayout() {
+    this.wheelLayout = { ...this.defaultLayout };
+    this.customBgUrl = '/assets/game_bg.jpg';
+    try {
+      if (fs.existsSync(layoutFilePath)) {
+        fs.unlinkSync(layoutFilePath);
+      }
+      console.log('🗑️ Persisted custom layout settings deleted successfully.');
+    } catch (e) {
+      console.error('⚠️ Failed to delete layout file:', e);
+    }
+    this.emit('layout_changed', this.wheelLayout);
+    this.emit('bg_changed', { bgUrl: this.customBgUrl });
+    return this.wheelLayout;
   }
 
   start() {

@@ -952,44 +952,17 @@ import { WebView } from 'react-native-webview';
     }
 
     function resetWheelLayoutDefault() {
-      document.getElementById('rngCanvasSize').value = 60.5;
-      document.getElementById('rngCanvasTop').value = 44.3;
-      document.getElementById('rngCanvasLeft').value = 50.0;
-      document.getElementById('rngFrameWidth').value = 100.0;
-      document.getElementById('rngFrameHeight').value = 100.0;
-      document.getElementById('rngFrameTop').value = 0.0;
-      document.getElementById('rngFrameLeft').value = 0.0;
-      document.getElementById('rngMedallionRadius').value = 39;
-      document.getElementById('rngSliceFontSize').value = 16;
-      document.getElementById('rngSliceGap').value = 6.8;
+      if (!confirm('⚠️ هل أنت متأكد من رغبتك في حذف كل المقاسات والتعديلات الحالية واستعادة إعدادات المصنع الافتراضية؟')) return;
       
-      document.getElementById('rngGapWheelResults').value = -16;
-      document.getElementById('rngGapResultsCards').value = 2;
-      document.getElementById('rngGapCardsChips').value = 2;
-      document.getElementById('rngRepeatBtnRight').value = 14;
-      document.getElementById('rngRepeatBtnBottom').value = 28;
-      
-      document.getElementById('rngHeaderTop').value = 10;
-      document.getElementById('rngHeaderRight').value = 12;
-      document.getElementById('rngHeaderLeft').value = 12;
-      
-      document.getElementById('rngSpinDuration').value = 2.5;
-      document.getElementById('rngDeluxePointerScale').value = 1.0;
-      document.getElementById('chkShowDeluxePointer').checked = false;
-      document.getElementById('chkWinningFlash').checked = true;
-
-      adminSlices = [
-        { char: 'dream' },
-        { char: 'lightning' },
-        { char: 'fire' },
-        { char: 'lightning' },
-        { char: 'fire' },
-        { char: 'lightning' }
-      ];
-
-      updateWheelLayoutLive();
-      renderAdminSlices();
-      showToast('🎡 تم إعادة تعيين الأبعاد والقطاعات الافتراضية بنجاح!');
+      fetch('/api/admin/layout/reset', { method: 'POST' })
+        .then(res => res.json())
+        .then(res => {
+          if (res.success) {
+            showToast(res.message);
+            initLayoutSliders(); // Reload sliders and indicators from the factory defaults
+            fetchAssetsLocal(); // Refresh assets library dropdowns
+          }
+        });
     }
 
     function renderAdminSlices() {

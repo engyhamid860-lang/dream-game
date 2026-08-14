@@ -286,6 +286,16 @@ router.post('/admin/layout', (req, res) => {
   });
 });
 
+// Admin Reset All Wheel Layout Settings to Defaults (حذف جميع التعديلات والملفات المخصصة)
+router.post('/admin/layout/reset', (req, res) => {
+  const resetLayout = gameEngine.resetWheelLayout();
+  res.json({
+    success: true,
+    message: '🗑️ تم حذف وحذف التعديلات واستعادة مقاسات العجلة والإطار والواجهة الافتراضية بنجاح!',
+    layout: resetLayout
+  });
+});
+
 // Admin Upload Local Game Background
 router.post('/admin/upload/background', upload.single('bgImage'), (req, res) => {
   if (!req.file) {
