@@ -57,11 +57,7 @@ body {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: 
-    linear-gradient(180deg, rgba(11, 7, 23, 0.78) 0%, rgba(11, 7, 23, 0.9) 100%),
-    url('assets/game_bg.jpg') center/cover no-repeat;
-  filter: brightness(0.9) contrast(1.1);
-  animation: bgPulseZoom 20s ease-in-out infinite alternate;
+  background: url('assets/game_bg.jpg') center/cover no-repeat;
 }
 
 @keyframes bgPulseZoom {
