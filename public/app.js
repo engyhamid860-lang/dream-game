@@ -123,6 +123,22 @@ function initApp() {
     fire: { title: 'النار', icon: '🔥', multiplier: '×2', grad1: '#f97316', grad2: '#7c2d12', iconColor: '#fdba74' }
   };
 
+  // Preload Character Image Assets for Full Sector Filling (الأيقونات تملا مثلث العجلة بالكامل)
+  const wheelImages = {
+    dream: new Image(),
+    lightning: new Image(),
+    fire: new Image()
+  };
+  wheelImages.dream.src = 'assets/dream.jpg';
+  wheelImages.lightning.src = 'assets/lightning.jpg';
+  wheelImages.fire.src = 'assets/fire.jpg';
+
+  Object.values(wheelImages).forEach(img => {
+    img.onload = () => {
+      if (typeof drawWheel === 'function') drawWheel(currentWheelAngle);
+    };
+  });
+
   // Layout customization configuration controlled from Admin Panel
   let wheelLayout = {
     canvasSize: 60.5,
@@ -285,21 +301,7 @@ function initApp() {
     drawWheel(currentWheelAngle, currentLiveTimer);
   }
 
-  // Preload Character Image Assets for Full Sector Filling (الأيقونات تملا مثلث العجلة بالكامل)
-  const wheelImages = {
-    dream: new Image(),
-    lightning: new Image(),
-    fire: new Image()
-  };
-  wheelImages.dream.src = 'assets/dream.jpg';
-  wheelImages.lightning.src = 'assets/lightning.jpg';
-  wheelImages.fire.src = 'assets/fire.jpg';
 
-  Object.values(wheelImages).forEach(img => {
-    img.onload = () => {
-      if (typeof drawWheel === 'function') drawWheel(currentWheelAngle);
-    };
-  });
 
   // 🎡 6-Sector Geometric Deluxe Fortune Wheel (عجلة هندسية دقيقة 6 قطاعات 60° بأيقونات كاملة)
   // 🎡 6-Sector Geometric Deluxe Fortune Wheel (خلفيات مدمجة بآرت الإطار الخيالي وأيقونات مصغرة)
