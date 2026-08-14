@@ -61,22 +61,23 @@ class GameEngine extends EventEmitter {
       frameHeight: 104.5,
       frameTop: 2.0,
       frameLeft: 0.0,
-      frameUrl: '/assets/wheel_frame.png',
-      medallionRadius: 39,
-      sliceGap: 6.8,
-      sliceFontSize: 16,
-      gapWheelResults: -16,
-      gapResultsCards: 2,
-      gapCardsChips: -12,
-      repeatBtnRight: 14,
-      repeatBtnBottom: 28,
-      headerTop: 10,
-      headerRight: 12,
-      headerLeft: 12,
-      spinDuration: 2.5,
-      showDeluxePointer: false,
-      deluxePointerScale: 1.0,
-      winningFlash: true,
+      cardsFrameUrl: '/assets/cards_frame.png',
+      charImages: {
+        dream: '/assets/dream.jpg',
+        lightning: '/assets/lightning.jpg',
+        fire: '/assets/fire.jpg'
+      },
+      charColors: {
+        dream: { grad1: '#f43f5e', grad2: '#881337' },
+        lightning: { grad1: '#581c87', grad2: '#2e1065' },
+        fire: { grad1: '#9d174d', grad2: '#4c0519' }
+      },
+      gameSounds: {
+        spin: '',
+        win: '',
+        click: '',
+        timer: ''
+      },
       slices: [
         { char: 'dream' },
         { char: 'lightning' },

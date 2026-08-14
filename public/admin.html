@@ -575,6 +575,115 @@
         <button class="btn-submit" style="background: linear-gradient(135deg, #10b981 0%, #047857 100%); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);" onclick="resetWheelLayoutDefault()">🔄 إعادة تعيين الأبعاد والقطاعات الافتراضية</button>
       </div>
 
+      <!-- Card 6: Custom Images, Icons, Sector Colors, and Game Sounds -->
+      <div class="card" style="margin-bottom: 25px;">
+        <h2>🎨 تخصيص صور الكروت، الأيقونات، ألوان القطاعات والأصوات محلياً</h2>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;">
+          تحكم بالكامل في إطار الكروت، أيقونات الشخصيات (الحلم، البرق، النار)، ألوان تدرج القطاعات، وتأثيرات الأصوات:
+        </p>
+
+        <!-- 1. Cards Frame Overlay -->
+        <div style="background: rgba(0,0,0,0.25); padding: 12px; border-radius: 12px; margin-bottom: 15px; border: 1px solid rgba(255,215,0,0.2);">
+          <h3 style="color: var(--gold); font-size: 0.95rem; margin-bottom: 8px;">💳 إطار كروت الرهان السفلي (Cards Grid Frame)</h3>
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <select id="selCardsFrameImage" class="form-control" style="flex: 1; min-width: 200px;" onchange="updateWheelLayoutLive()">
+              <!-- Populated dynamically -->
+            </select>
+            <input type="file" id="fileCardsFrameUpload" accept="image/*" style="display:none;" onchange="uploadCardsFrameLocal(this)">
+            <button onclick="document.getElementById('fileCardsFrameUpload').click()" style="padding: 8px 14px; border-radius: 8px; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: #fff; border: none; cursor: pointer; font-weight: bold; font-size: 0.82rem;">📤 رفع إطار كروت محلي</button>
+          </div>
+        </div>
+
+        <!-- 2. Character Icons Upload & Selection -->
+        <div style="background: rgba(0,0,0,0.25); padding: 12px; border-radius: 12px; margin-bottom: 15px; border: 1px solid rgba(255,215,0,0.2);">
+          <h3 style="color: var(--gold); font-size: 0.95rem; margin-bottom: 10px;">🌟 أيقونات الشخصيات (الحلم، البرق، النار)</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;">
+            <!-- Dream Icon -->
+            <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px;">
+              <label style="font-size: 0.82rem; color: #a855f7; font-weight: bold; display: block; margin-bottom: 6px;">🌙 أيقونة الحلم (Dream):</label>
+              <select id="selCharIconDream" class="form-control" style="margin-bottom: 6px; font-size: 0.8rem;" onchange="updateWheelLayoutLive()"></select>
+              <input type="file" id="fileIconDream" accept="image/*" style="display:none;" onchange="uploadCharIconLocal('dream', this)">
+              <button onclick="document.getElementById('fileIconDream').click()" style="width:100%; padding: 6px; border-radius: 6px; background: #6b21a8; color: #fff; border: 1px solid var(--gold); cursor: pointer; font-size: 0.78rem;">📤 رفع صورة الحلم</button>
+            </div>
+            <!-- Lightning Icon -->
+            <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px;">
+              <label style="font-size: 0.82rem; color: #3b82f6; font-weight: bold; display: block; margin-bottom: 6px;">⚡ أيقونة البرق (Lightning):</label>
+              <select id="selCharIconLightning" class="form-control" style="margin-bottom: 6px; font-size: 0.8rem;" onchange="updateWheelLayoutLive()"></select>
+              <input type="file" id="fileIconLightning" accept="image/*" style="display:none;" onchange="uploadCharIconLocal('lightning', this)">
+              <button onclick="document.getElementById('fileIconLightning').click()" style="width:100%; padding: 6px; border-radius: 6px; background: #1e3a8a; color: #fff; border: 1px solid var(--gold); cursor: pointer; font-size: 0.78rem;">📤 رفع صورة البرق</button>
+            </div>
+            <!-- Fire Icon -->
+            <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px;">
+              <label style="font-size: 0.82rem; color: #ef4444; font-weight: bold; display: block; margin-bottom: 6px;">🔥 أيقونة النار (Fire):</label>
+              <select id="selCharIconFire" class="form-control" style="margin-bottom: 6px; font-size: 0.8rem;" onchange="updateWheelLayoutLive()"></select>
+              <input type="file" id="fileIconFire" accept="image/*" style="display:none;" onchange="uploadCharIconLocal('fire', this)">
+              <button onclick="document.getElementById('fileIconFire').click()" style="width:100%; padding: 6px; border-radius: 6px; background: #991b1b; color: #fff; border: 1px solid var(--gold); cursor: pointer; font-size: 0.78rem;">📤 رفع صورة النار</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Sector Colors Picker -->
+        <div style="background: rgba(0,0,0,0.25); padding: 12px; border-radius: 12px; margin-bottom: 15px; border: 1px solid rgba(255,215,0,0.2);">
+          <h3 style="color: var(--gold); font-size: 0.95rem; margin-bottom: 10px;">🎨 ألوان تدرج قطاعات العجلة (Sector Colors)</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+            <!-- Dream Colors -->
+            <div style="background: rgba(255,255,255,0.05); padding: 8px 10px; border-radius: 8px; display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 0.8rem; color: #a855f7; font-weight: bold; width: 60px;">🌙 الحلم:</span>
+              <input type="color" id="clrDream1" value="#f43f5e" onchange="updateWheelLayoutLive()" style="border:none; cursor:pointer; width:30px; height:30px; border-radius:4px;">
+              <input type="color" id="clrDream2" value="#881337" onchange="updateWheelLayoutLive()" style="border:none; cursor:pointer; width:30px; height:30px; border-radius:4px;">
+            </div>
+            <!-- Lightning Colors -->
+            <div style="background: rgba(255,255,255,0.05); padding: 8px 10px; border-radius: 8px; display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 0.8rem; color: #3b82f6; font-weight: bold; width: 60px;">⚡ البرق:</span>
+              <input type="color" id="clrLightning1" value="#581c87" onchange="updateWheelLayoutLive()" style="border:none; cursor:pointer; width:30px; height:30px; border-radius:4px;">
+              <input type="color" id="clrLightning2" value="#2e1065" onchange="updateWheelLayoutLive()" style="border:none; cursor:pointer; width:30px; height:30px; border-radius:4px;">
+            </div>
+            <!-- Fire Colors -->
+            <div style="background: rgba(255,255,255,0.05); padding: 8px 10px; border-radius: 8px; display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 0.8rem; color: #ef4444; font-weight: bold; width: 60px;">🔥 النار:</span>
+              <input type="color" id="clrFire1" value="#9d174d" onchange="updateWheelLayoutLive()" style="border:none; cursor:pointer; width:30px; height:30px; border-radius:4px;">
+              <input type="color" id="clrFire2" value="#4c0519" onchange="updateWheelLayoutLive()" style="border:none; cursor:pointer; width:30px; height:30px; border-radius:4px;">
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Game Sound Effects Manager -->
+        <div style="background: rgba(0,0,0,0.25); padding: 12px; border-radius: 12px; border: 1px solid rgba(255,215,0,0.2);">
+          <h3 style="color: var(--gold); font-size: 0.95rem; margin-bottom: 10px;">🔊 مكتبة وتأثيرات أصوات اللعبة (Sound Effects)</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+            <!-- Spin Sound -->
+            <div style="background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px;">
+              <label style="font-size: 0.78rem; color: #fff; display: block; margin-bottom: 4px;">🎡 صوت دوران العجلة:</label>
+              <select id="selSoundSpin" class="form-control" style="font-size: 0.75rem; margin-bottom: 4px;" onchange="updateWheelLayoutLive()"></select>
+              <input type="file" id="fileSoundSpin" accept="audio/*" style="display:none;" onchange="uploadSoundLocal('spin', this)">
+              <button onclick="document.getElementById('fileSoundSpin').click()" style="width:100%; padding: 4px; border-radius: 4px; background: #374151; color: #fff; border: 1px solid #6b7280; cursor: pointer; font-size: 0.75rem;">📤 رفع صوت الدوران</button>
+            </div>
+            <!-- Win Sound -->
+            <div style="background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px;">
+              <label style="font-size: 0.78rem; color: #fff; display: block; margin-bottom: 4px;">🏆 صوت فوز الجولة:</label>
+              <select id="selSoundWin" class="form-control" style="font-size: 0.75rem; margin-bottom: 4px;" onchange="updateWheelLayoutLive()"></select>
+              <input type="file" id="fileSoundWin" accept="audio/*" style="display:none;" onchange="uploadSoundLocal('win', this)">
+              <button onclick="document.getElementById('fileSoundWin').click()" style="width:100%; padding: 4px; border-radius: 4px; background: #374151; color: #fff; border: 1px solid #6b7280; cursor: pointer; font-size: 0.75rem;">📤 رفع صوت الفوز</button>
+            </div>
+            <!-- Click Sound -->
+            <div style="background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px;">
+              <label style="font-size: 0.78rem; color: #fff; display: block; margin-bottom: 4px;">🎯 صوت النقر والرهان:</label>
+              <select id="selSoundClick" class="form-control" style="font-size: 0.75rem; margin-bottom: 4px;" onchange="updateWheelLayoutLive()"></select>
+              <input type="file" id="fileSoundClick" accept="audio/*" style="display:none;" onchange="uploadSoundLocal('click', this)">
+              <button onclick="document.getElementById('fileSoundClick').click()" style="width:100%; padding: 4px; border-radius: 4px; background: #374151; color: #fff; border: 1px solid #6b7280; cursor: pointer; font-size: 0.75rem;">📤 رفع صوت النقر</button>
+            </div>
+            <!-- Timer Sound -->
+            <div style="background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px;">
+              <label style="font-size: 0.78rem; color: #fff; display: block; margin-bottom: 4px;">⏳ صوت تكتكة العداد:</label>
+              <select id="selSoundTimer" class="form-control" style="font-size: 0.75rem; margin-bottom: 4px;" onchange="updateWheelLayoutLive()"></select>
+              <input type="file" id="fileSoundTimer" accept="audio/*" style="display:none;" onchange="uploadSoundLocal('timer', this)">
+              <button onclick="document.getElementById('fileSoundTimer').click()" style="width:100%; padding: 4px; border-radius: 4px; background: #374151; color: #fff; border: 1px solid #6b7280; cursor: pointer; font-size: 0.75rem;">📤 رفع صوت العداد</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
     </div>
 
     <!-- Mobile Integration Snippets Section -->
@@ -705,51 +814,41 @@ import { WebView } from 'react-native-webview';
         .catch(err => console.error(err));
     }
 
-    function forceWinner(winner) {
-      fetch('/api/admin/force-winner', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ winner })
-      })
-      .then(res => res.json())
-      .then(res => {
-        if (res.success) {
-          showToast(res.message);
-          fetchAdminOverview();
-        }
-      });
-    }
-
-    function addPlayerBalance() {
-      const userId = document.getElementById('txtUserId').value.trim() || 'user_me';
-      const amount = document.getElementById('txtAmount').value;
-      if (!amount || amount <= 0) return;
-
-      fetch('/api/admin/user-balance', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, amount })
-      })
-      .then(res => res.json())
-      .then(res => {
-        if (res.success) {
-          showToast('💎 ' + res.message);
-          fetchAdminOverview();
-        }
-      });
-    }
-
-    function setBgPreset(url) {
-      document.getElementById('txtBgUrl').value = url;
-    }
-
-    // Local Assets & Image Uploads Management
+    // Populate dropdowns from scanned local assets & uploads
     function fetchAssetsLocal() {
       fetch('/api/admin/assets')
         .then(res => res.json())
         .then(res => {
           if (res.success) {
-            // Populate background images dropdown
+            // Wheel Frame images
+            const selFrame = document.getElementById('selFrameImage');
+            const currentFrame = selFrame.value;
+            selFrame.innerHTML = '';
+            res.frames.forEach(frame => {
+              const opt = document.createElement('option');
+              opt.value = frame;
+              opt.textContent = frame;
+              selFrame.appendChild(opt);
+            });
+            if (currentFrame && res.frames.includes(currentFrame)) {
+              selFrame.value = currentFrame;
+            }
+
+            // Cards Grid Frame images
+            const selCardsFrame = document.getElementById('selCardsFrameImage');
+            const currentCardsFrame = selCardsFrame.value;
+            selCardsFrame.innerHTML = '';
+            (res.cardFrames || []).forEach(cf => {
+              const opt = document.createElement('option');
+              opt.value = cf;
+              opt.textContent = cf;
+              selCardsFrame.appendChild(opt);
+            });
+            if (currentCardsFrame && (res.cardFrames || []).includes(currentCardsFrame)) {
+              selCardsFrame.value = currentCardsFrame;
+            }
+
+            // Background images
             const selBg = document.getElementById('selBgImage');
             const currentBg = selBg.value;
             selBg.innerHTML = '';
@@ -763,101 +862,96 @@ import { WebView } from 'react-native-webview';
               selBg.value = currentBg;
             }
 
-            // Populate frame images dropdown
-            const selFrame = document.getElementById('selFrameImage');
-            const currentFrame = selFrame.value;
-            selFrame.innerHTML = '';
-            res.frames.forEach(frame => {
-              const opt = document.createElement('option');
-              opt.value = frame;
-              opt.textContent = frame;
-              selFrame.appendChild(opt);
+            // Character Icon dropdowns
+            ['Dream', 'Lightning', 'Fire'].forEach(chName => {
+              const selIcon = document.getElementById(`selCharIcon${chName}`);
+              if (selIcon) {
+                const curVal = selIcon.value;
+                selIcon.innerHTML = '';
+                (res.charIcons || []).forEach(icon => {
+                  const opt = document.createElement('option');
+                  opt.value = icon;
+                  opt.textContent = icon;
+                  selIcon.appendChild(opt);
+                });
+                if (curVal && (res.charIcons || []).includes(curVal)) {
+                  selIcon.value = curVal;
+                }
+              }
             });
-            if (currentFrame && res.frames.includes(currentFrame)) {
-              selFrame.value = currentFrame;
-            }
+
+            // Sound Effects dropdowns
+            ['Spin', 'Win', 'Click', 'Timer'].forEach(sndName => {
+              const selSnd = document.getElementById(`selSound${sndName}`);
+              if (selSnd) {
+                const curVal = selSnd.value;
+                selSnd.innerHTML = '<option value="">-- بدون صوت مخصص --</option>';
+                (res.sounds || []).forEach(snd => {
+                  const opt = document.createElement('option');
+                  opt.value = snd;
+                  opt.textContent = snd;
+                  selSnd.appendChild(opt);
+                });
+                if (curVal && (res.sounds || []).includes(curVal)) {
+                  selSnd.value = curVal;
+                }
+              }
+            });
           }
         });
     }
 
-    function selectBgPresetLocal() {
-      const bgUrl = document.getElementById('selBgImage').value;
-      if (!bgUrl) return;
-      fetch('/api/admin/background', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ bgUrl })
-      })
-      .then(res => res.json())
-      .then(res => {
-        if (res.success) {
-          showToast('🖼️ تم تطبيق الخلفية بنجاح!');
-        }
-      });
-    }
-
-    function selectFramePresetLocal() {
-      const frameUrl = document.getElementById('selFrameImage').value;
-      if (!frameUrl) return;
-      fetch('/api/admin/layout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ frameUrl })
-      })
-      .then(res => res.json())
-      .then(res => {
-        if (res.success) {
-          showToast('🎡 تم تطبيق صورة الإطار بنجاح!');
-        }
-      });
-    }
-
-    function uploadBackgroundLocal() {
-      const fileInput = document.getElementById('fileBgImage');
-      if (fileInput.files.length === 0) {
-        showToast('⚠️ يرجى اختيار ملف صورة أولاً لرفعه');
-        return;
-      }
+    function uploadCardsFrameLocal(input) {
+      if (!input.files || input.files.length === 0) return;
       const formData = new FormData();
-      formData.append('bgImage', fileInput.files[0]);
+      formData.append('cardsFrameImage', input.files[0]);
 
-      fetch('/api/admin/upload/background', {
-        method: 'POST',
-        body: formData
-      })
-      .then(res => res.json())
-      .then(res => {
-        if (res.success) {
-          showToast(res.message);
-          fetchAssetsLocal(); // Refresh list
-        } else {
-          showToast(res.error || 'فشل رفع الخلفية');
-        }
-      });
+      fetch('/api/admin/upload/cards-frame', { method: 'POST', body: formData })
+        .then(res => res.json())
+        .then(res => {
+          if (res.success) {
+            showToast(res.message);
+            fetchAssetsLocal();
+          } else {
+            showToast(res.error || 'فشل رفع إطار الكروت');
+          }
+        });
     }
 
-    function uploadFrameLocal() {
-      const fileInput = document.getElementById('fileFrameImage');
-      if (fileInput.files.length === 0) {
-        showToast('⚠️ يرجى اختيار ملف صورة إطار أولاً لرفعه');
-        return;
-      }
+    function uploadCharIconLocal(char, input) {
+      if (!input.files || input.files.length === 0) return;
       const formData = new FormData();
-      formData.append('frameImage', fileInput.files[0]);
+      formData.append('charIconImage', input.files[0]);
+      formData.append('char', char);
 
-      fetch('/api/admin/upload/frame', {
-        method: 'POST',
-        body: formData
-      })
-      .then(res => res.json())
-      .then(res => {
-        if (res.success) {
-          showToast(res.message);
-          fetchAssetsLocal(); // Refresh list
-        } else {
-          showToast(res.error || 'فشل رفع الإطار');
-        }
-      });
+      fetch('/api/admin/upload/char-icon', { method: 'POST', body: formData })
+        .then(res => res.json())
+        .then(res => {
+          if (res.success) {
+            showToast(res.message);
+            fetchAssetsLocal();
+          } else {
+            showToast(res.error || 'فشل رفع الصورة');
+          }
+        });
+    }
+
+    function uploadSoundLocal(soundType, input) {
+      if (!input.files || input.files.length === 0) return;
+      const formData = new FormData();
+      formData.append('soundFile', input.files[0]);
+      formData.append('soundType', soundType);
+
+      fetch('/api/admin/upload/sound', { method: 'POST', body: formData })
+        .then(res => res.json())
+        .then(res => {
+          if (res.success) {
+            showToast(res.message);
+            fetchAssetsLocal();
+          } else {
+            showToast(res.error || 'فشل رفع صوت اللعبة');
+          }
+        });
     }
 
     // Live Wheel Layout Customizer functions (التحديث اللحظي المباشر للنسب والأبعاد)
@@ -892,6 +986,25 @@ import { WebView } from 'react-native-webview';
       
       const showDeluxePointer = document.getElementById('chkShowDeluxePointer').checked;
       const winningFlash = document.getElementById('chkWinningFlash').checked;
+
+      // Custom images, colors & sounds
+      const cardsFrameUrl = document.getElementById('selCardsFrameImage') ? document.getElementById('selCardsFrameImage').value : '';
+      const charImages = {
+        dream: document.getElementById('selCharIconDream') ? document.getElementById('selCharIconDream').value : '',
+        lightning: document.getElementById('selCharIconLightning') ? document.getElementById('selCharIconLightning').value : '',
+        fire: document.getElementById('selCharIconFire') ? document.getElementById('selCharIconFire').value : ''
+      };
+      const charColors = {
+        dream: { grad1: document.getElementById('clrDream1').value, grad2: document.getElementById('clrDream2').value },
+        lightning: { grad1: document.getElementById('clrLightning1').value, grad2: document.getElementById('clrLightning2').value },
+        fire: { grad1: document.getElementById('clrFire1').value, grad2: document.getElementById('clrFire2').value }
+      };
+      const gameSounds = {
+        spin: document.getElementById('selSoundSpin') ? document.getElementById('selSoundSpin').value : '',
+        win: document.getElementById('selSoundWin') ? document.getElementById('selSoundWin').value : '',
+        click: document.getElementById('selSoundClick') ? document.getElementById('selSoundClick').value : '',
+        timer: document.getElementById('selSoundTimer') ? document.getElementById('selSoundTimer').value : ''
+      };
 
       // Update values indicators
       document.getElementById('valCanvasSize').textContent = canvasSize;
@@ -1090,11 +1203,42 @@ import { WebView } from 'react-native-webview';
 
             renderAdminSlices();
             
-            // Set select values
+            // Set select and color picker values
             const selBg = document.getElementById('selBgImage');
             if (selBg) selBg.value = res.data.bgUrl || '/assets/game_bg.jpg';
             const selFrame = document.getElementById('selFrameImage');
             if (selFrame) selFrame.value = layout.frameUrl || '/assets/wheel_frame.png';
+
+            const selCardsFrame = document.getElementById('selCardsFrameImage');
+            if (selCardsFrame && layout.cardsFrameUrl) selCardsFrame.value = layout.cardsFrameUrl;
+
+            if (layout.charImages) {
+              if (layout.charImages.dream && document.getElementById('selCharIconDream')) document.getElementById('selCharIconDream').value = layout.charImages.dream;
+              if (layout.charImages.lightning && document.getElementById('selCharIconLightning')) document.getElementById('selCharIconLightning').value = layout.charImages.lightning;
+              if (layout.charImages.fire && document.getElementById('selCharIconFire')) document.getElementById('selCharIconFire').value = layout.charImages.fire;
+            }
+
+            if (layout.charColors) {
+              if (layout.charColors.dream) {
+                if (layout.charColors.dream.grad1 && document.getElementById('clrDream1')) document.getElementById('clrDream1').value = layout.charColors.dream.grad1;
+                if (layout.charColors.dream.grad2 && document.getElementById('clrDream2')) document.getElementById('clrDream2').value = layout.charColors.dream.grad2;
+              }
+              if (layout.charColors.lightning) {
+                if (layout.charColors.lightning.grad1 && document.getElementById('clrLightning1')) document.getElementById('clrLightning1').value = layout.charColors.lightning.grad1;
+                if (layout.charColors.lightning.grad2 && document.getElementById('clrLightning2')) document.getElementById('clrLightning2').value = layout.charColors.lightning.grad2;
+              }
+              if (layout.charColors.fire) {
+                if (layout.charColors.fire.grad1 && document.getElementById('clrFire1')) document.getElementById('clrFire1').value = layout.charColors.fire.grad1;
+                if (layout.charColors.fire.grad2 && document.getElementById('clrFire2')) document.getElementById('clrFire2').value = layout.charColors.fire.grad2;
+              }
+            }
+
+            if (layout.gameSounds) {
+              if (layout.gameSounds.spin && document.getElementById('selSoundSpin')) document.getElementById('selSoundSpin').value = layout.gameSounds.spin;
+              if (layout.gameSounds.win && document.getElementById('selSoundWin')) document.getElementById('selSoundWin').value = layout.gameSounds.win;
+              if (layout.gameSounds.click && document.getElementById('selSoundClick')) document.getElementById('selSoundClick').value = layout.gameSounds.click;
+              if (layout.gameSounds.timer && document.getElementById('selSoundTimer')) document.getElementById('selSoundTimer').value = layout.gameSounds.timer;
+            }
           }
         });
     }

@@ -193,9 +193,59 @@ function initApp() {
     if (wheelWrapper) {
       wheelWrapper.style.marginBottom = `${wheelLayout.gapWheelResults !== undefined ? wheelLayout.gapWheelResults : -16}px`;
     }
-    const charGrid = document.querySelector('.characters-grid');
+    // Apply cards grid frame image overlay
     if (charGrid) {
       charGrid.style.marginTop = `${wheelLayout.gapResultsCards !== undefined ? wheelLayout.gapResultsCards : 2}px`;
+      if (wheelLayout.cardsFrameUrl) {
+        charGrid.style.backgroundImage = `url('${wheelLayout.cardsFrameUrl}')`;
+      }
+    }
+
+    // Apply custom character icon images to wheel and betting cards
+    if (wheelLayout.charImages) {
+      if (wheelLayout.charImages.dream) {
+        charPresets.dream.img = wheelLayout.charImages.dream;
+        wheelImages.dream.src = wheelLayout.charImages.dream;
+        const imgD = document.querySelector('#cardDream .card-small-icon-img');
+        if (imgD) imgD.src = wheelLayout.charImages.dream;
+      }
+      if (wheelLayout.charImages.lightning) {
+        charPresets.lightning.img = wheelLayout.charImages.lightning;
+        wheelImages.lightning.src = wheelLayout.charImages.lightning;
+        const imgL = document.querySelector('#cardLightning .card-small-icon-img');
+        if (imgL) imgL.src = wheelLayout.charImages.lightning;
+      }
+      if (wheelLayout.charImages.fire) {
+        charPresets.fire.img = wheelLayout.charImages.fire;
+        wheelImages.fire.src = wheelLayout.charImages.fire;
+        const imgF = document.querySelector('#cardFire .card-small-icon-img');
+        if (imgF) imgF.src = wheelLayout.charImages.fire;
+      }
+    }
+
+    // Apply custom character sector gradient colors
+    if (wheelLayout.charColors) {
+      ['dream', 'lightning', 'fire'].forEach(ch => {
+        if (wheelLayout.charColors[ch]) {
+          if (wheelLayout.charColors[ch].grad1) charPresets[ch].grad1 = wheelLayout.charColors[ch].grad1;
+          if (wheelLayout.charColors[ch].grad2) charPresets[ch].grad2 = wheelLayout.charColors[ch].grad2;
+        }
+      });
+      // Refresh active slices gradient colors
+      wheelSlices.forEach(slice => {
+        if (charPresets[slice.char]) {
+          slice.grad1 = charPresets[slice.char].grad1;
+          slice.grad2 = charPresets[slice.char].grad2;
+        }
+      });
+    }
+
+    // Apply custom game sounds
+    if (wheelLayout.gameSounds) {
+      if (wheelLayout.gameSounds.spin) gameAudio.spin.src = wheelLayout.gameSounds.spin;
+      if (wheelLayout.gameSounds.win) gameAudio.win.src = wheelLayout.gameSounds.win;
+      if (wheelLayout.gameSounds.click) gameAudio.click.src = wheelLayout.gameSounds.click;
+      if (wheelLayout.gameSounds.timer) gameAudio.timer.src = wheelLayout.gameSounds.timer;
     }
     const chipSection = document.querySelector('.chip-selector-section');
     if (chipSection) {

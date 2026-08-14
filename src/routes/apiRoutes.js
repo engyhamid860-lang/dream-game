@@ -238,6 +238,7 @@ router.post('/admin/user-balance', (req, res) => {
 router.post('/admin/layout', (req, res) => {
   const { 
     canvasSize, canvasTop, canvasLeft, frameSize, frameWidth, frameHeight, frameTop, frameLeft, frameUrl,
+    cardsFrameUrl, charImages, charColors, gameSounds,
     medallionRadius, sliceGap, sliceFontSize, 
     gapWheelResults, gapResultsCards, gapCardsChips,
     repeatBtnRight, repeatBtnBottom,
@@ -257,6 +258,11 @@ router.post('/admin/layout', (req, res) => {
   if (frameTop !== undefined) newLayout.frameTop = parseFloat(frameTop);
   if (frameLeft !== undefined) newLayout.frameLeft = parseFloat(frameLeft);
   if (frameUrl !== undefined) newLayout.frameUrl = frameUrl;
+  if (cardsFrameUrl !== undefined) newLayout.cardsFrameUrl = cardsFrameUrl;
+  if (charImages !== undefined) newLayout.charImages = charImages;
+  if (charColors !== undefined) newLayout.charColors = charColors;
+  if (gameSounds !== undefined) newLayout.gameSounds = gameSounds;
+
   if (medallionRadius !== undefined) newLayout.medallionRadius = parseFloat(medallionRadius);
   if (sliceGap !== undefined) newLayout.sliceGap = parseFloat(sliceGap);
   if (sliceFontSize !== undefined) newLayout.sliceFontSize = parseFloat(sliceFontSize);
@@ -281,7 +287,7 @@ router.post('/admin/layout', (req, res) => {
   const updatedLayout = gameEngine.setWheelLayout(newLayout);
   res.json({
     success: true,
-    message: 'تم تحديث أبعاد ومقاسات العجلة والإطار بنجاح في الوقت الفعلي! 🎡',
+    message: 'تم تحديث أبعاد ومقاسات وتصميمات العجلة والكروت بنجاح في الوقت الفعلي! 🎡',
     layout: updatedLayout
   });
 });
@@ -324,6 +330,54 @@ router.post('/admin/upload/frame', upload.single('frameImage'), (req, res) => {
   });
 });
 
+// Admin Upload Local Cards Grid Frame Overlay
+router.post('/admin/upload/cards-frame', upload.single('cardsFrameImage'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ success: false, error: 'يرجى اختيار صورة إطار الكروت لرفعها' });
+  }
+  const fileUrl = `/assets/uploads/${req.file.filename}`;
+  const updatedLayout = gameEngine.setWheelLayout({ cardsFrameUrl: fileUrl });
+  res.json({
+    success: true,
+    message: 'تم رفع صورة إطار الكروت وتطبيقها بنجاح! 💳',
+    layout: updatedLayout
+  });
+});
+
+// Admin Upload Local Character Icon Image (dream, lightning, fire)
+router.post('/admin/upload/char-icon', upload.single('charIconImage'), (req, res) => {
+  const char = req.body.char;
+  if (!req.file || !char) {
+    return res.status(400).json({ success: false, error: 'يرجى اختيار ملف الصورة وتحديد الشخصية' });
+  }
+  const fileUrl = `/assets/uploads/${req.file.filename}`;
+  const currentImgs = gameEngine.wheelLayout.charImages || {};
+  const updatedImgs = { ...currentImgs, [char]: fileUrl };
+  const updatedLayout = gameEngine.setWheelLayout({ charImages: updatedImgs });
+  res.json({
+    success: true,
+    message: `تم رفع صورة أيقونة شخصية (${char}) وتطبيقها بنجاح! 🌟`,
+    layout: updatedLayout
+  });
+});
+
+// Admin Upload Local Game Sound Effect (spin, win, click, timer)
+router.post('/admin/upload/sound', upload.single('soundFile'), (req, res) => {
+  const soundType = req.body.soundType;
+  if (!req.file || !soundType) {
+    return res.status(400).json({ success: false, error: 'يرجى اختيار ملف الصوت وتحديد نوع التأثير' });
+  }
+  const fileUrl = `/assets/uploads/${req.file.filename}`;
+  const currentSounds = gameEngine.wheelLayout.gameSounds || {};
+  const updatedSounds = { ...currentSounds, [soundType]: fileUrl };
+  const updatedLayout = gameEngine.setWheelLayout({ gameSounds: updatedSounds });
+  res.json({
+    success: true,
+    message: `تم رفع ملف صوت (${soundType}) وتطبيقه بنجاح! 🔊`,
+    layout: updatedLayout
+  });
+});
+
 // Admin Scan Local Assets & Uploads lists (للاختيار المباشر دون الحاجة لكتابة روابط)
 router.get('/admin/assets', (req, res) => {
   const assetsDir = path.join(__dirname, '..', '..', 'public', 'assets');
@@ -339,11 +393,15 @@ router.get('/admin/assets', (req, res) => {
     uploadedFiles = fs.readdirSync(uploadsDir).filter(f => fs.statSync(path.join(uploadsDir, f)).isFile());
   }
 
-  // Group default assets and uploads
   const frames = [
     '/assets/wheel_frame.png',
     '/assets/wheel_frame_fantasy.png',
     ...uploadedFiles.filter(f => f.startsWith('frameImage-')).map(f => `/assets/uploads/${f}`)
+  ];
+
+  const cardFrames = [
+    '/assets/cards_frame.png',
+    ...uploadedFiles.filter(f => f.startsWith('cardsFrameImage-')).map(f => `/assets/uploads/${f}`)
   ];
 
   const backgrounds = [
@@ -354,10 +412,24 @@ router.get('/admin/assets', (req, res) => {
     ...uploadedFiles.filter(f => f.startsWith('bgImage-')).map(f => `/assets/uploads/${f}`)
   ];
 
+  const charIcons = [
+    '/assets/dream.jpg',
+    '/assets/lightning.jpg',
+    '/assets/fire.jpg',
+    ...uploadedFiles.filter(f => f.startsWith('charIconImage-')).map(f => `/assets/uploads/${f}`)
+  ];
+
+  const sounds = [
+    ...uploadedFiles.filter(f => f.startsWith('soundFile-')).map(f => `/assets/uploads/${f}`)
+  ];
+
   res.json({
     success: true,
     frames,
-    backgrounds
+    cardFrames,
+    backgrounds,
+    charIcons,
+    sounds
   });
 });
 
