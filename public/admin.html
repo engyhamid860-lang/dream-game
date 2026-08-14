@@ -402,7 +402,7 @@
       <div class="card">
         <h2>🎡 لوحة تحكم حجم وأبعاد العجلة والإطار بالبث المباشر</h2>
         <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;">
-          قم بتحريك أشرطة التمرير لتغيير حجم العجلة وصورة الإطار والعد التنازلي وتمركزهما فوراً في بث حي لكل شاشات اللاعبين:
+          تحكم في العجلة والإطار والقطاعات والعد التنازلي وتمركزهما فوراً في بث حي لكل شاشات اللاعبين:
         </p>
 
         <!-- Sliders Grid -->
@@ -426,9 +426,52 @@
             <label>حجم دائرة العد التنازلي (<span id="valMedallionRadius">39</span>px):</label>
             <input type="range" id="rngMedallionRadius" min="20" max="80" step="1" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
           </div>
+
+          <div class="form-group">
+            <label>إزاحة الإطار عمودياً (<span id="valFrameTop">0</span>px):</label>
+            <input type="range" id="rngFrameTop" min="-100" max="100" step="0.5" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+          </div>
+
+          <div class="form-group">
+            <label>إزاحة الإطار أفقياً (<span id="valFrameLeft">0</span>px):</label>
+            <input type="range" id="rngFrameLeft" min="-100" max="100" step="0.5" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+          </div>
+
+          <div class="form-group">
+            <label>حجم الأيقونة داخل القطاع (<span id="valSliceFontSize">16</span>):</label>
+            <input type="range" id="rngSliceFontSize" min="8" max="35" step="0.5" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+          </div>
+
+          <div class="form-group">
+            <label>حجم الفراغات بين القطاعات (<span id="valSliceGap">6.8</span>px):</label>
+            <input type="range" id="rngSliceGap" min="0" max="20" step="0.2" class="form-control" style="cursor: pointer; height: auto;" oninput="updateWheelLayoutLive()">
+          </div>
         </div>
 
-        <button class="btn-submit" style="background: linear-gradient(135deg, #10b981 0%, #047857 100%); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);" onclick="resetWheelLayoutDefault()">🔄 إعادة تعيين الأبعاد الافتراضية</button>
+        <!-- Slices Manager Sub-section -->
+        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0;">
+        <h3 style="color: var(--gold); font-size: 1rem; margin-bottom: 10px;">🍕 إدارة قطاعات العجلة (تعديل، حذف، وإضافة قطاع)</h3>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">
+          تحكم في عدد قطاعات العجلة ونوع كل قطاع (الحلم، البرق، النار):
+        </p>
+
+        <!-- Current Slices List Container -->
+        <div id="slicesListContainer" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 12px; min-height: 50px;">
+          <!-- Dynamically populated -->
+        </div>
+
+        <!-- Add Slice Controls -->
+        <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 15px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 12px; flex-wrap: wrap;">
+          <label style="font-size: 0.85rem; color: #fff; margin: 0;">نوع القطاع الجديد:</label>
+          <select id="selNewSliceType" class="form-control" style="width: auto; padding: 6px 12px; font-size: 0.85rem; height: auto;">
+            <option value="dream">🌙 الحلم (x10)</option>
+            <option value="lightning">⚡ البرق (x2)</option>
+            <option value="fire">🔥 النار (x2)</option>
+          </select>
+          <button onclick="addNewSliceLive()" style="padding: 8px 16px; border-radius: 8px; background: linear-gradient(135deg, #a855f7 0%, #581c87 100%); color: #fff; border: 1px solid var(--gold); cursor: pointer; font-weight: 900; font-size: 0.85rem;">➕ إضافة هذا القطاع للعجلة</button>
+        </div>
+
+        <button class="btn-submit" style="background: linear-gradient(135deg, #10b981 0%, #047857 100%); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);" onclick="resetWheelLayoutDefault()">🔄 إعادة تعيين الأبعاد والقطاعات الافتراضية</button>
       </div>
 
     </div>
@@ -618,23 +661,45 @@ import { WebView } from 'react-native-webview';
       });
     }
 
-    // Live Wheel Layout Customizer functions (التحديث اللحظي المباشر)
+    // Live Wheel Layout Customizer functions (التحديث اللحظي المباشر للنسب والأبعاد)
+    let adminSlices = [];
+
     function updateWheelLayoutLive() {
       const canvasSize = parseFloat(document.getElementById('rngCanvasSize').value);
       const canvasTop = parseFloat(document.getElementById('rngCanvasTop').value);
       const frameSize = parseFloat(document.getElementById('rngFrameSize').value);
       const medallionRadius = parseFloat(document.getElementById('rngMedallionRadius').value);
+      
+      const frameTop = parseFloat(document.getElementById('rngFrameTop').value);
+      const frameLeft = parseFloat(document.getElementById('rngFrameLeft').value);
+      const sliceFontSize = parseFloat(document.getElementById('rngSliceFontSize').value);
+      const sliceGap = parseFloat(document.getElementById('rngSliceGap').value);
 
       // Update values indicators
       document.getElementById('valCanvasSize').textContent = canvasSize;
       document.getElementById('valCanvasTop').textContent = canvasTop;
       document.getElementById('valFrameSize').textContent = frameSize;
       document.getElementById('valMedallionRadius').textContent = medallionRadius;
+      
+      document.getElementById('valFrameTop').textContent = frameTop;
+      document.getElementById('valFrameLeft').textContent = frameLeft;
+      document.getElementById('valSliceFontSize').textContent = sliceFontSize;
+      document.getElementById('valSliceGap').textContent = sliceGap;
 
       fetch('/api/admin/layout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ canvasSize, canvasTop, frameSize, medallionRadius })
+        body: JSON.stringify({ 
+          canvasSize, 
+          canvasTop, 
+          frameSize, 
+          frameTop, 
+          frameLeft, 
+          medallionRadius,
+          sliceGap,
+          sliceFontSize,
+          slices: adminSlices
+        })
       });
     }
 
@@ -642,9 +707,77 @@ import { WebView } from 'react-native-webview';
       document.getElementById('rngCanvasSize').value = 60.5;
       document.getElementById('rngCanvasTop').value = 44.3;
       document.getElementById('rngFrameSize').value = 100.0;
+      document.getElementById('rngFrameTop').value = 0.0;
+      document.getElementById('rngFrameLeft').value = 0.0;
       document.getElementById('rngMedallionRadius').value = 39;
+      document.getElementById('rngSliceFontSize').value = 16;
+      document.getElementById('rngSliceGap').value = 6.8;
+
+      adminSlices = [
+        { char: 'dream' },
+        { char: 'lightning' },
+        { char: 'fire' },
+        { char: 'lightning' },
+        { char: 'fire' },
+        { char: 'lightning' }
+      ];
+
       updateWheelLayoutLive();
-      showToast('🎡 تم إعادة تعيين الأبعاد الافتراضية بنجاح!');
+      renderAdminSlices();
+      showToast('🎡 تم إعادة تعيين الأبعاد والقطاعات الافتراضية بنجاح!');
+    }
+
+    function renderAdminSlices() {
+      const container = document.getElementById('slicesListContainer');
+      container.innerHTML = '';
+
+      const names = {
+        dream: { label: '🌙 الحلم (x10)', color: '#f43f5e' },
+        lightning: { label: '⚡ البرق (x2)', color: '#a855f7' },
+        fire: { label: '🔥 النار (x2)', color: '#f97316' }
+      };
+
+      adminSlices.forEach((slice, idx) => {
+        const info = names[slice.char] || { label: slice.char, color: '#475569' };
+        const pill = document.createElement('div');
+        pill.style.cssText = `
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          padding: 6px 12px;
+          background: ${info.color};
+          border-radius: 8px;
+          border: 1px solid rgba(255,255,255,0.25);
+          color: #fff;
+          font-weight: 700;
+          font-size: 0.8rem;
+        `;
+        
+        pill.innerHTML = `
+          <span>#${idx + 1}: ${info.label}</span>
+          <span style="cursor: pointer; color: #ff8a8a; font-weight: 900; margin-left: 4px;" onclick="deleteSliceLive(${idx})">❌</span>
+        `;
+        container.appendChild(pill);
+      });
+    }
+
+    function addNewSliceLive() {
+      const type = document.getElementById('selNewSliceType').value;
+      adminSlices.push({ char: type });
+      updateWheelLayoutLive();
+      renderAdminSlices();
+      showToast('🍕 تم إضافة قطاع جديد للعجلة بنجاح!');
+    }
+
+    function deleteSliceLive(idx) {
+      if (adminSlices.length <= 3) {
+        showToast('⚠️ لا يمكن حذف! يجب أن تحتوي العجلة على 3 قطاعات على الأقل.');
+        return;
+      }
+      adminSlices.splice(idx, 1);
+      updateWheelLayoutLive();
+      renderAdminSlices();
+      showToast('🗑️ تم حذف القطاع بنجاح!');
     }
 
     function initLayoutSliders() {
@@ -653,15 +786,35 @@ import { WebView } from 'react-native-webview';
         .then(res => {
           if (res.success && res.data.wheelLayout) {
             const layout = res.data.wheelLayout;
+            
             document.getElementById('rngCanvasSize').value = layout.canvasSize || 60.5;
             document.getElementById('rngCanvasTop').value = layout.canvasTop || 44.3;
             document.getElementById('rngFrameSize').value = layout.frameSize || 100.0;
+            document.getElementById('rngFrameTop').value = layout.frameTop || 0.0;
+            document.getElementById('rngFrameLeft').value = layout.frameLeft || 0.0;
             document.getElementById('rngMedallionRadius').value = layout.medallionRadius || 39;
+            document.getElementById('rngSliceFontSize').value = layout.sliceFontSize || 16;
+            document.getElementById('rngSliceGap').value = layout.sliceGap || 6.8;
 
             document.getElementById('valCanvasSize').textContent = layout.canvasSize || 60.5;
             document.getElementById('valCanvasTop').textContent = layout.canvasTop || 44.3;
             document.getElementById('valFrameSize').textContent = layout.frameSize || 100.0;
+            document.getElementById('valFrameTop').textContent = layout.frameTop || 0.0;
+            document.getElementById('valFrameLeft').textContent = layout.frameLeft || 0.0;
             document.getElementById('valMedallionRadius').textContent = layout.medallionRadius || 39;
+            document.getElementById('valSliceFontSize').textContent = layout.sliceFontSize || 16;
+            document.getElementById('valSliceGap').textContent = layout.sliceGap || 6.8;
+
+            adminSlices = layout.slices || [
+              { char: 'dream' },
+              { char: 'lightning' },
+              { char: 'fire' },
+              { char: 'lightning' },
+              { char: 'fire' },
+              { char: 'lightning' }
+            ];
+
+            renderAdminSlices();
           }
         });
     }

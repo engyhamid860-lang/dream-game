@@ -216,12 +216,17 @@ router.post('/admin/user-balance', (req, res) => {
 
 // Admin Update Wheel Layout Configuration (حجم العجلة، الصورة، العد التنازلي، التمركز)
 router.post('/admin/layout', (req, res) => {
-  const { canvasSize, canvasTop, frameSize, medallionRadius } = req.body;
+  const { canvasSize, canvasTop, frameSize, frameTop, frameLeft, medallionRadius, sliceGap, sliceFontSize, slices } = req.body;
   const newLayout = {};
   if (canvasSize !== undefined) newLayout.canvasSize = parseFloat(canvasSize);
   if (canvasTop !== undefined) newLayout.canvasTop = parseFloat(canvasTop);
   if (frameSize !== undefined) newLayout.frameSize = parseFloat(frameSize);
+  if (frameTop !== undefined) newLayout.frameTop = parseFloat(frameTop);
+  if (frameLeft !== undefined) newLayout.frameLeft = parseFloat(frameLeft);
   if (medallionRadius !== undefined) newLayout.medallionRadius = parseFloat(medallionRadius);
+  if (sliceGap !== undefined) newLayout.sliceGap = parseFloat(sliceGap);
+  if (sliceFontSize !== undefined) newLayout.sliceFontSize = parseFloat(sliceFontSize);
+  if (slices !== undefined && Array.isArray(slices)) newLayout.slices = slices;
 
   const updatedLayout = gameEngine.setWheelLayout(newLayout);
   res.json({

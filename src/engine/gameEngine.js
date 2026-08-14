@@ -46,7 +46,19 @@ class GameEngine extends EventEmitter {
       canvasSize: 60.5,
       canvasTop: 44.3,
       frameSize: 100.0,
-      medallionRadius: 39
+      frameTop: 0.0,
+      frameLeft: 0.0,
+      medallionRadius: 39,
+      sliceGap: 6.8,
+      sliceFontSize: 16,
+      slices: [
+        { char: 'dream' },
+        { char: 'lightning' },
+        { char: 'fire' },
+        { char: 'lightning' },
+        { char: 'fire' },
+        { char: 'lightning' }
+      ]
     };
   }
 

@@ -116,18 +116,40 @@ function initApp() {
   let currentWheelAngle = 0; // In Radians
   let isWheelSpinning = false;
 
+  // Character presets for dynamic slices
+  const charPresets = {
+    dream: { title: 'الحلم', icon: '🌙', multiplier: '×10', grad1: '#f43f5e', grad2: '#881337', iconColor: '#fb7185' },
+    lightning: { title: 'البرق', icon: '⚡', multiplier: '×2', grad1: '#581c87', grad2: '#2e1065', iconColor: '#c084fc' },
+    fire: { title: 'النار', icon: '🔥', multiplier: '×2', grad1: '#f97316', grad2: '#7c2d12', iconColor: '#fdba74' }
+  };
+
   // Layout customization configuration controlled from Admin Panel
   let wheelLayout = {
     canvasSize: 60.5,
     canvasTop: 44.3,
     frameSize: 100.0,
-    medallionRadius: 39
+    frameTop: 0.0,
+    frameLeft: 0.0,
+    medallionRadius: 39,
+    sliceGap: 6.8,
+    sliceFontSize: 16
   };
 
   function applyWheelLayout(layout) {
     if (!layout) return;
     wheelLayout = { ...wheelLayout, ...layout };
     
+    // Apply dynamic slices if updated from admin panel
+    if (wheelLayout.slices && Array.isArray(wheelLayout.slices)) {
+      wheelSlices = wheelLayout.slices.map(s => {
+        const preset = charPresets[s.char] || charPresets.lightning;
+        return {
+          char: s.char,
+          ...preset
+        };
+      });
+    }
+
     // Apply canvas styling
     if (wheelCanvas) {
       wheelCanvas.style.width = `${wheelLayout.canvasSize}%`;
@@ -140,6 +162,7 @@ function initApp() {
     if (frameOverlay) {
       frameOverlay.style.width = `${wheelLayout.frameSize}%`;
       frameOverlay.style.height = `${wheelLayout.frameSize}%`;
+      frameOverlay.style.transform = `translate(calc(-50% + ${wheelLayout.frameLeft || 0}px), calc(-50% + ${wheelLayout.frameTop || 0}px))`;
     }
     
     // Redraw immediately to apply sizes
@@ -164,7 +187,7 @@ function initApp() {
 
   // 🎡 6-Sector Geometric Deluxe Fortune Wheel (عجلة هندسية دقيقة 6 قطاعات 60° بأيقونات كاملة)
   // 🎡 6-Sector Geometric Deluxe Fortune Wheel (خلفيات مدمجة بآرت الإطار الخيالي وأيقونات مصغرة)
-  const wheelSlices = [
+  let wheelSlices = [
     { char: 'dream', title: 'الحلم', icon: '🌙', multiplier: '×10', grad1: '#f43f5e', grad2: '#881337', iconColor: '#fb7185' },
     { char: 'lightning', title: 'البرق', icon: '⚡', multiplier: '×2', grad1: '#581c87', grad2: '#2e1065', iconColor: '#c084fc' },
     { char: 'fire', title: 'النار', icon: '🔥', multiplier: '×2', grad1: '#581c87', grad2: '#2e1065', iconColor: '#c084fc' },
@@ -241,8 +264,8 @@ function initApp() {
         const iconScale = 1.0; // Steady and completely still icon without pulse
         wheelCtx.scale(iconScale, iconScale);
 
-        // Small circular icon size matching betting cards
-        const iconRadius = radius * 0.16;
+        // Small circular icon size matching betting cards (حجم القطاع والأيقونة الداخلي)
+        const iconRadius = radius * ((wheelLayout.sliceFontSize || 16) / 100);
 
         wheelCtx.beginPath();
         wheelCtx.arc(0, 0, iconRadius, 0, Math.PI * 2);
@@ -263,7 +286,7 @@ function initApp() {
         wheelCtx.restore();
       }
 
-      // Bold Golden Inner Sector Divider Lines (حدود قطاعات سميكة وبارزة مجسمة باللون الذهبي)
+      // Bold Golden Inner Sector Divider Lines (حدود قطاعات سميكة وبارزة مجسمة باللون الذهبي - الفراغات)
       wheelCtx.save();
       wheelCtx.beginPath();
       wheelCtx.moveTo(centerX, centerY);
@@ -275,8 +298,9 @@ function initApp() {
       dividerGrad.addColorStop(0.7, '#ffd700');
       dividerGrad.addColorStop(1, '#b8860b');
 
+      const sGap = wheelLayout.sliceGap !== undefined ? wheelLayout.sliceGap : 6.8;
       wheelCtx.strokeStyle = isWinnerLanded ? '#ffffff' : dividerGrad;
-      wheelCtx.lineWidth = isWinnerLanded ? 9.5 : 6.8;
+      wheelCtx.lineWidth = isWinnerLanded ? (sGap * 1.4) : sGap;
       wheelCtx.shadowColor = isWinnerLanded ? '#ffffff' : 'rgba(0, 0, 0, 0.85)';
       wheelCtx.shadowBlur = isWinnerLanded ? 20 : 6;
       wheelCtx.stroke();
