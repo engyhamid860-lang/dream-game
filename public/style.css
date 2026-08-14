@@ -199,34 +199,36 @@ body {
 /* 2. Main Game Container (واجهة متجاوبة تفاعلية لكافة الشاشات) */
 .voice-app-container {
   width: 100%;
-  max-width: 900px;
+  max-width: 440px;
+  min-height: 100vh;
+  min-height: 100dvh;
   margin: 0 auto;
   background: transparent;
   border: none;
-  border-radius: 28px;
   box-shadow: none;
   backdrop-filter: none;
   overflow: hidden;
   position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: calc(6px + env(safe-area-inset-bottom, 0px));
   touch-action: manipulation;
-  transition: max-width 0.3s ease;
 }
 
 @media (min-width: 992px) {
   body {
-    padding: 20px 16px;
+    padding: 0;
   }
   .voice-app-container {
-    max-width: 920px;
+    max-width: 440px;
   }
   .characters-grid {
-    max-width: 720px;
+    max-width: 100%;
     margin: 0 auto;
   }
   .chip-selector-section {
-    max-width: 720px;
+    max-width: 100%;
     margin: 0 auto;
     width: 100%;
   }
@@ -238,12 +240,7 @@ body {
     align-items: flex-start;
   }
   .voice-app-container {
-    max-width: 100vw;
-    min-height: 100vh;
-    min-height: 100dvh;
-    border-radius: 0;
-    border: none;
-    box-shadow: none;
+    max-width: 440px;
   }
 }
 
