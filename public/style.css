@@ -552,18 +552,19 @@ body {
   display: none !important;
 }
 
-/* User-Provided Deluxe 3D Fantasy Frame Image Overlay (تنسيق الإطار الماسي بدقة 100% بدون انحراف) */
+/* User-Provided Deluxe 3D Fantasy Frame Image Overlay (تكبير الإطار الذهبي ليغطي أجزاء العجلة بالكامل) */
 .wheel-custom-frame-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 132%;
+  height: 132%;
   aspect-ratio: 1 / 1;
   object-fit: contain;
   z-index: 30;
   pointer-events: none;
-  filter: drop-shadow(0 6px 15px rgba(0, 0, 0, 0.8));
+  filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.9));
   transition: transform 0.15s ease;
 }
 
@@ -572,8 +573,8 @@ body {
   top: 44.3%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 53%;
-  height: 53%;
+  width: 70%;
+  height: 70%;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   z-index: 10;
