@@ -116,6 +116,36 @@ function initApp() {
   let currentWheelAngle = 0; // In Radians
   let isWheelSpinning = false;
 
+  // Layout customization configuration controlled from Admin Panel
+  let wheelLayout = {
+    canvasSize: 60.5,
+    canvasTop: 44.3,
+    frameSize: 100.0,
+    medallionRadius: 39
+  };
+
+  function applyWheelLayout(layout) {
+    if (!layout) return;
+    wheelLayout = { ...wheelLayout, ...layout };
+    
+    // Apply canvas styling
+    if (wheelCanvas) {
+      wheelCanvas.style.width = `${wheelLayout.canvasSize}%`;
+      wheelCanvas.style.height = `${wheelLayout.canvasSize}%`;
+      wheelCanvas.style.top = `${wheelLayout.canvasTop}%`;
+    }
+    
+    // Apply frame image overlay styling
+    const frameOverlay = document.getElementById('wheelFrameOverlay');
+    if (frameOverlay) {
+      frameOverlay.style.width = `${wheelLayout.frameSize}%`;
+      frameOverlay.style.height = `${wheelLayout.frameSize}%`;
+    }
+    
+    // Redraw immediately to apply sizes
+    drawWheel(currentWheelAngle, currentLiveTimer);
+  }
+
   // Preload Character Image Assets for Full Sector Filling (الأيقونات تملا مثلث العجلة بالكامل)
   const wheelImages = {
     dream: new Image(),
@@ -290,9 +320,13 @@ function initApp() {
     const isWarning = displayTimer <= 3 && displayTimer > 0;
 
     // Medallion Outer Bevel Ring (توسط دقيق 100% في منتصف الحلقة الذهبية للإطار)
+    const mOuter = wheelLayout.medallionRadius || 39;
+    const mInner = mOuter * 0.77;
+    const mFont = Math.round(mOuter * 0.615);
+
     wheelCtx.save();
     wheelCtx.beginPath();
-    wheelCtx.arc(centerX, centerY, 39, 0, Math.PI * 2);
+    wheelCtx.arc(centerX, centerY, mOuter, 0, Math.PI * 2);
     wheelCtx.fillStyle = '#1e1b4b';
     wheelCtx.fill();
     wheelCtx.strokeStyle = rimGrad;
@@ -303,8 +337,8 @@ function initApp() {
 
     // Inner Medallion Core Circle
     wheelCtx.beginPath();
-    wheelCtx.arc(centerX, centerY, 30, 0, Math.PI * 2);
-    const coreGrad = wheelCtx.createRadialGradient(centerX, centerY, 4, centerX, centerY, 30);
+    wheelCtx.arc(centerX, centerY, mInner, 0, Math.PI * 2);
+    const coreGrad = wheelCtx.createRadialGradient(centerX, centerY, 4, centerX, centerY, mInner);
     if (isWarning) {
       coreGrad.addColorStop(0, '#ef4444');
       coreGrad.addColorStop(1, '#7f1d1d');
@@ -324,13 +358,13 @@ function initApp() {
 
     if (displayTimer !== null && displayTimer !== undefined && displayTimer > 0) {
       const formatted = displayTimer < 10 ? `0${displayTimer}` : `${displayTimer}`;
-      wheelCtx.font = '900 24px Outfit, Cairo, sans-serif';
+      wheelCtx.font = `900 ${mFont}px Outfit, Cairo, sans-serif`;
       wheelCtx.fillStyle = isWarning ? '#ffffff' : '#ffd700';
       wheelCtx.shadowColor = isWarning ? '#ef4444' : '#ffd700';
       wheelCtx.shadowBlur = 8;
       wheelCtx.fillText(formatted, centerX, centerY + 1);
     } else {
-      wheelCtx.font = '900 14px Cairo, sans-serif';
+      wheelCtx.font = `900 ${Math.round(mFont * 0.58)}px Cairo, sans-serif`;
       wheelCtx.fillStyle = '#ffd700';
       wheelCtx.shadowColor = '#ffd700';
       wheelCtx.shadowBlur = 6;
@@ -572,6 +606,10 @@ function initApp() {
       const appContainer = document.querySelector('.voice-app-container');
       if (appContainer) appContainer.style.backgroundImage = `url('${data.bgUrl}')`;
     }
+    
+    if (data.wheelLayout) {
+      applyWheelLayout(data.wheelLayout);
+    }
   }
 
   // Socket Events
@@ -580,6 +618,10 @@ function initApp() {
       const appContainer = document.querySelector('.voice-app-container');
       if (appContainer) appContainer.style.backgroundImage = `url('${data.bgUrl}')`;
     }
+  });
+
+  socket.on('layout_changed', (layout) => {
+    applyWheelLayout(layout);
   });
 
   socket.on('round_started', (data) => {

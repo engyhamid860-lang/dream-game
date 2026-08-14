@@ -40,6 +40,20 @@ class GameEngine extends EventEmitter {
 
     this.forcedNextWinner = null;
     this.customBgUrl = '/assets/game_bg.jpg';
+    
+    // Layout customization options (حجم العجلة، الصورة، التمركز، والعد التنازلي)
+    this.wheelLayout = {
+      canvasSize: 60.5,
+      canvasTop: 44.3,
+      frameSize: 100.0,
+      medallionRadius: 39
+    };
+  }
+
+  setWheelLayout(layout) {
+    this.wheelLayout = { ...this.wheelLayout, ...layout };
+    this.emit('layout_changed', this.wheelLayout);
+    return this.wheelLayout;
   }
 
   setBackgroundUrl(url) {
@@ -269,7 +283,8 @@ class GameEngine extends EventEmitter {
       userBalance: walletEngine.getBalance(userId),
       bgUrl: this.customBgUrl,
       stats: this.getStatsFormatted(),
-      history: this.roundHistory
+      history: this.roundHistory,
+      wheelLayout: this.wheelLayout
     };
   }
 

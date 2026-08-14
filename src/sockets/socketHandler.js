@@ -84,6 +84,10 @@ function initSockets(io) {
   gameEngine.on('bg_changed', (data) => {
     io.to('voice_room_game').emit('bg_changed', data);
   });
+
+  gameEngine.on('layout_changed', (data) => {
+    io.to('voice_room_game').emit('layout_changed', data);
+  });
 }
 
 module.exports = initSockets;

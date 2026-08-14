@@ -214,17 +214,20 @@ router.post('/admin/user-balance', (req, res) => {
   });
 });
 
-// Admin Update Game Background Image URL
-router.post('/admin/background', (req, res) => {
-  const { bgUrl } = req.body;
-  if (!bgUrl) {
-    return res.status(400).json({ success: false, error: 'رابط الخلفية مطلوب' });
-  }
-  const updatedUrl = gameEngine.setBackgroundUrl(bgUrl);
+// Admin Update Wheel Layout Configuration (حجم العجلة، الصورة، العد التنازلي، التمركز)
+router.post('/admin/layout', (req, res) => {
+  const { canvasSize, canvasTop, frameSize, medallionRadius } = req.body;
+  const newLayout = {};
+  if (canvasSize !== undefined) newLayout.canvasSize = parseFloat(canvasSize);
+  if (canvasTop !== undefined) newLayout.canvasTop = parseFloat(canvasTop);
+  if (frameSize !== undefined) newLayout.frameSize = parseFloat(frameSize);
+  if (medallionRadius !== undefined) newLayout.medallionRadius = parseFloat(medallionRadius);
+
+  const updatedLayout = gameEngine.setWheelLayout(newLayout);
   res.json({
     success: true,
-    message: 'تم تحديث خلفية اللعبة بنجاح في الوقت الفعلي لكل اللاعبين! 🖼️',
-    bgUrl: updatedUrl
+    message: 'تم تحديث أبعاد ومقاسات العجلة والإطار بنجاح في الوقت الفعلي! 🎡',
+    layout: updatedLayout
   });
 });
 
