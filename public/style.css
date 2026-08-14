@@ -537,13 +537,13 @@ body {
 .wheel-wrapper {
   position: relative;
   z-index: 10;
-  width: min(320px, 78vw);
-  height: min(320px, 78vw);
+  width: min(350px, 82vw);
+  height: min(350px, 82vw);
   aspect-ratio: 1 / 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 6px auto;
+  margin: 4px auto;
   overflow: visible;
 }
 
@@ -573,8 +573,8 @@ body {
   top: 44.3%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 69.5%;
-  height: 69.5%;
+  width: 74%;
+  height: 74%;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   z-index: 10;
