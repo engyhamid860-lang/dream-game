@@ -201,15 +201,11 @@ body {
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
-  background: 
-    linear-gradient(180deg, rgba(20, 14, 42, 0.88) 0%, rgba(12, 8, 26, 0.96) 100%),
-    url('assets/game_bg.jpg') center/cover no-repeat;
-  border: 2px solid rgba(255, 215, 0, 0.3);
+  background: transparent;
+  border: none;
   border-radius: 28px;
-  box-shadow: 
-    0 25px 60px rgba(0, 0, 0, 0.85), 
-    0 0 45px rgba(168, 85, 247, 0.3);
-  backdrop-filter: blur(20px);
+  box-shadow: none;
+  backdrop-filter: none;
   overflow: hidden;
   position: relative;
   display: flex;
