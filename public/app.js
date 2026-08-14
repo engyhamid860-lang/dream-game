@@ -599,7 +599,7 @@ function initApp() {
     safeSetText(totalBetLightning, fmt(characterTotals.lightning));
     safeSetText(totalBetFire, fmt(characterTotals.fire));
 
-    if (bet.userId === 'user_me') {
+    if (bet.userId === realUserId || bet.userId === 'user_me') {
       myBets = uBets;
       if (myBets.dream > 0 || myBets.lightning > 0 || myBets.fire > 0) {
         lastRoundUserBets = { ...myBets };
@@ -608,6 +608,13 @@ function initApp() {
       safeSetText(myBetLightning, `رهانك: ${fmt(myBets.lightning)}`);
       safeSetText(myBetFire, `رهانك: ${fmt(myBets.fire)}`);
       userBalance = newBalance;
+      safeSetText(userBalanceText, fmt(userBalance));
+    }
+  });
+
+  socket.on('player_won', (data) => {
+    if (data.userId === realUserId || data.userId === 'user_me') {
+      userBalance = data.newBalance;
       safeSetText(userBalanceText, fmt(userBalance));
     }
   });
