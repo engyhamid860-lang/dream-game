@@ -560,20 +560,31 @@ body {
   filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.9));
 }
 
-/* User-Provided Deluxe 3D Fantasy Frame Image Overlay (نسبة دائرية 1:1 متناسبة 100% بدون أي بيضاوية أو تشويه على الهاتف) */
+/* User-Provided Deluxe 3D Fantasy Frame Image Overlay (تنسيق الإطار الجديد المحيط بالعجلة بدقة 100%) */
 .wheel-custom-frame-overlay {
   position: absolute;
-  top: 50%;
+  top: 44.5%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 135%;
-  height: 135%;
+  width: 142%;
+  height: 142%;
   aspect-ratio: 1 / 1;
   object-fit: contain;
   z-index: 30;
   pointer-events: none;
-  filter: none;
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.7));
   transition: transform 0.15s ease;
+}
+
+#wheelCanvas {
+  position: relative;
+  top: -5.5%;
+  width: 98.5%;
+  height: 98.5%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  box-shadow: none;
+  transition: none;
 }
 
 @keyframes pointerRecoilPulse {
