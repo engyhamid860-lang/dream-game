@@ -57,7 +57,7 @@ class GameEngine extends EventEmitter {
       sliceFontSize: 16,
       gapWheelResults: -16,
       gapResultsCards: 2,
-      gapCardsChips: 2,
+      gapCardsChips: -12,
       repeatBtnRight: 14,
       repeatBtnBottom: 28,
       headerTop: 10,

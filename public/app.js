@@ -139,7 +139,7 @@ function initApp() {
     sliceFontSize: 16,
     gapWheelResults: -16,
     gapResultsCards: 2,
-    gapCardsChips: 2,
+    gapCardsChips: -12,
     repeatBtnRight: 14,
     repeatBtnBottom: 28,
     headerTop: 10,
@@ -400,43 +400,76 @@ function initApp() {
       wheelCtx.shadowBlur = 6;
       wheelCtx.fill();
     }
-
-    // 5. Center Hub 3D Medallion with Live Countdown Timer (مركز العجلة الفاخر)
+    // 5. Center Hub 3D Medallion with Ticking Sweep Arc (مركز العجلة الفاخر الجديد)
     const displayTimer = (liveTimerVal !== null && liveTimerVal !== undefined) ? liveTimerVal : currentLiveTimer;
     const isWarning = displayTimer <= 3 && displayTimer > 0;
 
-    // Medallion Outer Bevel Ring (توسط دقيق 100% في منتصف الحلقة الذهبية للإطار)
     const mOuter = wheelLayout.medallionRadius || 39;
     const mInner = mOuter * 0.77;
-    const mFont = Math.round(mOuter * 0.615);
+    const mFont = Math.round(mOuter * 0.62);
 
     wheelCtx.save();
+    
+    // Outer Metallic Shield Ring
     wheelCtx.beginPath();
     wheelCtx.arc(centerX, centerY, mOuter, 0, Math.PI * 2);
-    wheelCtx.fillStyle = '#1e1b4b';
+    wheelCtx.fillStyle = '#0b081e';
     wheelCtx.fill();
+    
+    // Draw sweeping neon countdown progress arc (شريط دائري متحرك للوقت)
+    if (displayTimer !== null && displayTimer !== undefined && displayTimer > 0) {
+      const maxDuration = 10;
+      const progress = Math.min(Math.max(displayTimer / maxDuration, 0), 1.0);
+      const startAngleArc = -0.5 * Math.PI; // 12 o'clock
+      const endAngleArc = startAngleArc + (progress * Math.PI * 2);
+      
+      wheelCtx.beginPath();
+      wheelCtx.arc(centerX, centerY, mOuter - 2.5, startAngleArc, endAngleArc);
+      wheelCtx.strokeStyle = isWarning ? '#f43f5e' : '#10b981'; // Alert red or steady emerald green
+      wheelCtx.lineWidth = 5;
+      wheelCtx.lineCap = 'round';
+      wheelCtx.stroke();
+    }
+    
+    // Metallic Rim Border
+    wheelCtx.beginPath();
+    wheelCtx.arc(centerX, centerY, mOuter, 0, Math.PI * 2);
     wheelCtx.strokeStyle = rimGrad;
-    wheelCtx.lineWidth = 4;
+    wheelCtx.lineWidth = 3;
     wheelCtx.shadowColor = '#000000';
     wheelCtx.shadowBlur = 10;
     wheelCtx.stroke();
 
-    // Inner Medallion Core Circle
+    // Inner Core Glass Marble
     wheelCtx.beginPath();
     wheelCtx.arc(centerX, centerY, mInner, 0, Math.PI * 2);
-    const coreGrad = wheelCtx.createRadialGradient(centerX, centerY, 4, centerX, centerY, mInner);
+    const coreGrad = wheelCtx.createRadialGradient(
+      centerX - mInner * 0.15, centerY - mInner * 0.15, 2,
+      centerX, centerY, mInner
+    );
     if (isWarning) {
-      coreGrad.addColorStop(0, '#ef4444');
-      coreGrad.addColorStop(1, '#7f1d1d');
+      coreGrad.addColorStop(0, '#ff8a8a');
+      coreGrad.addColorStop(0.3, '#f43f5e');
+      coreGrad.addColorStop(1, '#4c0519'); // Deep rose wine
     } else {
-      coreGrad.addColorStop(0, '#31103f');
-      coreGrad.addColorStop(1, '#0f051d');
+      coreGrad.addColorStop(0, '#c084fc'); // Glowing neon violet
+      coreGrad.addColorStop(0.3, '#581c87');
+      coreGrad.addColorStop(1, '#090514'); // Dark velvet space
     }
     wheelCtx.fillStyle = coreGrad;
     wheelCtx.fill();
-    wheelCtx.strokeStyle = isWarning ? '#fca5a5' : '#ffd700';
-    wheelCtx.lineWidth = 2.2;
+    wheelCtx.strokeStyle = isWarning ? '#fda4af' : '#ffd700';
+    wheelCtx.lineWidth = 1.5;
     wheelCtx.stroke();
+
+    // 3D Glass Dome Gloss Highlight (تأثير الزجاج اللامع)
+    wheelCtx.beginPath();
+    wheelCtx.ellipse(centerX, centerY - mInner * 0.3, mInner * 0.7, mInner * 0.35, 0, 0, Math.PI * 2);
+    const gloss = wheelCtx.createLinearGradient(centerX, centerY - mInner, centerX, centerY);
+    gloss.addColorStop(0, 'rgba(255, 255, 255, 0.45)');
+    gloss.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    wheelCtx.fillStyle = gloss;
+    wheelCtx.fill();
 
     // Timer / Symbol Text inside Medallion
     wheelCtx.textAlign = 'center';
@@ -446,15 +479,15 @@ function initApp() {
       const formatted = displayTimer < 10 ? `0${displayTimer}` : `${displayTimer}`;
       wheelCtx.font = `900 ${mFont}px Outfit, Cairo, sans-serif`;
       wheelCtx.fillStyle = isWarning ? '#ffffff' : '#ffd700';
-      wheelCtx.shadowColor = isWarning ? '#ef4444' : '#ffd700';
-      wheelCtx.shadowBlur = 8;
-      wheelCtx.fillText(formatted, centerX, centerY + 1);
+      wheelCtx.shadowColor = isWarning ? '#f43f5e' : '#ffd700';
+      wheelCtx.shadowBlur = 12;
+      wheelCtx.fillText(formatted, centerX, centerY + 1.5);
     } else {
-      wheelCtx.font = `900 ${Math.round(mFont * 0.58)}px Cairo, sans-serif`;
+      wheelCtx.font = `900 ${Math.round(mFont * 0.65)}px Cairo, sans-serif`;
       wheelCtx.fillStyle = '#ffd700';
       wheelCtx.shadowColor = '#ffd700';
-      wheelCtx.shadowBlur = 6;
-      wheelCtx.fillText('★ DL ★', centerX, centerY);
+      wheelCtx.shadowBlur = 10;
+      wheelCtx.fillText('★ DL ★', centerX, centerY + 1);
     }
     wheelCtx.restore();
   }
