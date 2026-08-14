@@ -987,24 +987,43 @@ import { WebView } from 'react-native-webview';
       const showDeluxePointer = document.getElementById('chkShowDeluxePointer').checked;
       const winningFlash = document.getElementById('chkWinningFlash').checked;
 
-      // Custom images, colors & sounds
-      const cardsFrameUrl = document.getElementById('selCardsFrameImage') ? document.getElementById('selCardsFrameImage').value : '';
-      const charImages = {
-        dream: document.getElementById('selCharIconDream') ? document.getElementById('selCharIconDream').value : '',
-        lightning: document.getElementById('selCharIconLightning') ? document.getElementById('selCharIconLightning').value : '',
-        fire: document.getElementById('selCharIconFire') ? document.getElementById('selCharIconFire').value : ''
+      // Custom images, colors & sounds (only send non-empty values)
+      const payload = { 
+        canvasSize, canvasTop, canvasLeft, frameWidth, frameHeight, frameTop, frameLeft, 
+        medallionRadius, sliceGap, sliceFontSize, gapWheelResults, gapResultsCards, gapCardsChips,
+        repeatBtnRight, repeatBtnBottom, headerTop, headerRight, headerLeft,
+        spinDuration, showDeluxePointer, deluxePointerScale, winningFlash, slices: adminSlices
       };
+
+      const cardsFrameUrl = document.getElementById('selCardsFrameImage')?.value;
+      if (cardsFrameUrl) payload.cardsFrameUrl = cardsFrameUrl;
+
+      const charImages = {};
+      const imgD = document.getElementById('selCharIconDream')?.value;
+      if (imgD) charImages.dream = imgD;
+      const imgL = document.getElementById('selCharIconLightning')?.value;
+      if (imgL) charImages.lightning = imgL;
+      const imgF = document.getElementById('selCharIconFire')?.value;
+      if (imgF) charImages.fire = imgF;
+      if (Object.keys(charImages).length > 0) payload.charImages = charImages;
+
       const charColors = {
         dream: { grad1: document.getElementById('clrDream1').value, grad2: document.getElementById('clrDream2').value },
         lightning: { grad1: document.getElementById('clrLightning1').value, grad2: document.getElementById('clrLightning2').value },
         fire: { grad1: document.getElementById('clrFire1').value, grad2: document.getElementById('clrFire2').value }
       };
-      const gameSounds = {
-        spin: document.getElementById('selSoundSpin') ? document.getElementById('selSoundSpin').value : '',
-        win: document.getElementById('selSoundWin') ? document.getElementById('selSoundWin').value : '',
-        click: document.getElementById('selSoundClick') ? document.getElementById('selSoundClick').value : '',
-        timer: document.getElementById('selSoundTimer') ? document.getElementById('selSoundTimer').value : ''
-      };
+      payload.charColors = charColors;
+
+      const gameSounds = {};
+      const sndSpin = document.getElementById('selSoundSpin')?.value;
+      if (sndSpin) gameSounds.spin = sndSpin;
+      const sndWin = document.getElementById('selSoundWin')?.value;
+      if (sndWin) gameSounds.win = sndWin;
+      const sndClick = document.getElementById('selSoundClick')?.value;
+      if (sndClick) gameSounds.click = sndClick;
+      const sndTimer = document.getElementById('selSoundTimer')?.value;
+      if (sndTimer) gameSounds.timer = sndTimer;
+      if (Object.keys(gameSounds).length > 0) payload.gameSounds = gameSounds;
 
       // Update values indicators
       document.getElementById('valCanvasSize').textContent = canvasSize;
@@ -1036,31 +1055,7 @@ import { WebView } from 'react-native-webview';
       fetch('/api/admin/layout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          canvasSize, 
-          canvasTop, 
-          canvasLeft,
-          frameWidth,
-          frameHeight,
-          frameTop, 
-          frameLeft, 
-          medallionRadius,
-          sliceGap,
-          sliceFontSize,
-          gapWheelResults,
-          gapResultsCards,
-          gapCardsChips,
-          repeatBtnRight,
-          repeatBtnBottom,
-          headerTop,
-          headerRight,
-          headerLeft,
-          spinDuration,
-          showDeluxePointer,
-          deluxePointerScale,
-          winningFlash,
-          slices: adminSlices
-        })
+        body: JSON.stringify(payload)
       });
     }
 

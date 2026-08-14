@@ -203,24 +203,29 @@ function initApp() {
 
     // Apply custom character icon images to wheel and betting cards
     if (wheelLayout.charImages) {
-      if (wheelLayout.charImages.dream) {
-        charPresets.dream.img = wheelLayout.charImages.dream;
-        wheelImages.dream.src = wheelLayout.charImages.dream;
-        const imgD = document.querySelector('#cardDream .card-small-icon-img');
-        if (imgD) imgD.src = wheelLayout.charImages.dream;
-      }
-      if (wheelLayout.charImages.lightning) {
-        charPresets.lightning.img = wheelLayout.charImages.lightning;
-        wheelImages.lightning.src = wheelLayout.charImages.lightning;
-        const imgL = document.querySelector('#cardLightning .card-small-icon-img');
-        if (imgL) imgL.src = wheelLayout.charImages.lightning;
-      }
-      if (wheelLayout.charImages.fire) {
-        charPresets.fire.img = wheelLayout.charImages.fire;
-        wheelImages.fire.src = wheelLayout.charImages.fire;
-        const imgF = document.querySelector('#cardFire .card-small-icon-img');
-        if (imgF) imgF.src = wheelLayout.charImages.fire;
-      }
+      ['dream', 'lightning', 'fire'].forEach(ch => {
+        const newSrc = wheelLayout.charImages[ch];
+        if (newSrc) {
+          charPresets[ch].img = newSrc;
+          
+          // Preload & swap wheel image object for canvas rendering
+          if (!wheelImages[ch] || wheelImages[ch].src !== newSrc) {
+            const imgObj = new Image();
+            imgObj.onload = () => {
+              drawWheel(); // Force canvas redraw when new image finishes loading
+            };
+            imgObj.src = newSrc;
+            wheelImages[ch] = imgObj;
+          }
+          
+          // Swap HTML card icon image
+          const cardImg = document.querySelector(`#card${ch.charAt(0).toUpperCase() + ch.slice(1)} .card-small-icon-img`);
+          if (cardImg) {
+            cardImg.src = newSrc;
+          }
+        }
+      });
+      drawWheel();
     }
 
     // Apply custom character sector gradient colors
