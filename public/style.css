@@ -570,11 +570,11 @@ body {
 
 #wheelCanvas {
   position: absolute;
-  top: 44.2%;
+  top: 44.3%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 60.5%;
-  height: 60.5%;
+  width: 69.5%;
+  height: 69.5%;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   z-index: 10;
