@@ -39,6 +39,13 @@ class GameEngine extends EventEmitter {
     };
 
     this.forcedNextWinner = null;
+    this.customBgUrl = '/assets/game_bg.jpg';
+  }
+
+  setBackgroundUrl(url) {
+    this.customBgUrl = url;
+    this.emit('bg_changed', { bgUrl: this.customBgUrl });
+    return this.customBgUrl;
   }
 
   start() {
@@ -260,6 +267,7 @@ class GameEngine extends EventEmitter {
       currentWinner: this.currentWinner,
       winners: this.winnersList,
       userBalance: walletEngine.getBalance(userId),
+      bgUrl: this.customBgUrl,
       stats: this.getStatsFormatted(),
       history: this.roundHistory
     };

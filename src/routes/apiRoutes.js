@@ -214,4 +214,18 @@ router.post('/admin/user-balance', (req, res) => {
   });
 });
 
+// Admin Update Game Background Image URL
+router.post('/admin/background', (req, res) => {
+  const { bgUrl } = req.body;
+  if (!bgUrl) {
+    return res.status(400).json({ success: false, error: 'رابط الخلفية مطلوب' });
+  }
+  const updatedUrl = gameEngine.setBackgroundUrl(bgUrl);
+  res.json({
+    success: true,
+    message: 'تم تحديث خلفية اللعبة بنجاح في الوقت الفعلي لكل اللاعبين! 🖼️',
+    bgUrl: updatedUrl
+  });
+});
+
 module.exports = router;

@@ -381,6 +381,23 @@
         </div>
       </div>
 
+      <!-- Card 4: Dynamic Game Background Management -->
+      <div class="card">
+        <h2>🖼️ تغيير خلفية اللعبة في الوقت الفعلي</h2>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;">
+          تغيير صورة الخلفية فورياً لجميع اللاعبين المتصلين:
+        </p>
+        <div class="form-group">
+          <label>رابط الصورة أو مسار الملف المحفوظ:</label>
+          <input type="text" id="txtBgUrl" class="form-control" value="/assets/game_bg.jpg" placeholder="https://example.com/bg.jpg أو /assets/game_bg.jpg">
+        </div>
+        <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
+          <button style="padding: 6px 12px; font-size: 0.8rem; border-radius: 8px; background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); cursor: pointer;" onclick="setBgPreset('/assets/game_bg.jpg')">✨ الخلفية الملكية (افتراضي)</button>
+          <button style="padding: 6px 12px; font-size: 0.8rem; border-radius: 8px; background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); cursor: pointer;" onclick="setBgPreset('/assets/dream.jpg')">🌙 خلفية الحلم</button>
+        </div>
+        <button class="btn-submit" onclick="updateGameBackground()">🖼️ تطبيق وتحديث الخلفية لجميع اللاعبين الان</button>
+      </div>
+
     </div>
 
     <!-- Mobile Integration Snippets Section -->
@@ -541,6 +558,29 @@ import { WebView } from 'react-native-webview';
         if (res.success) {
           showToast('💎 ' + res.message);
           fetchAdminOverview();
+        }
+      });
+    }
+
+    function setBgPreset(url) {
+      document.getElementById('txtBgUrl').value = url;
+    }
+
+    function updateGameBackground() {
+      const bgUrl = document.getElementById('txtBgUrl').value.trim();
+      if (!bgUrl) return;
+
+      fetch('/api/admin/background', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bgUrl })
+      })
+      .then(res => res.json())
+      .then(res => {
+        if (res.success) {
+          showToast(res.message);
+        } else {
+          showToast(res.error || 'حدث خطأ أثناء تغيير الخلفية');
         }
       });
     }

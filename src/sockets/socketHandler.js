@@ -80,6 +80,10 @@ function initSockets(io) {
   gameEngine.on('round_finished', (data) => {
     io.to('voice_room_game').emit('round_finished', data);
   });
+
+  gameEngine.on('bg_changed', (data) => {
+    io.to('voice_room_game').emit('bg_changed', data);
+  });
 }
 
 module.exports = initSockets;

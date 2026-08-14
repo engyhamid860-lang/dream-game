@@ -567,9 +567,21 @@ function initApp() {
     safeSetText(myBetFire, fmt(myBets.fire));
 
     renderHistoryPills(data.history || []);
+
+    if (data.bgUrl) {
+      const bgLayer = document.querySelector('.bg-game-layer');
+      if (bgLayer) bgLayer.style.backgroundImage = `url('${data.bgUrl}')`;
+    }
   }
 
   // Socket Events
+  socket.on('bg_changed', (data) => {
+    if (data && data.bgUrl) {
+      const bgLayer = document.querySelector('.bg-game-layer');
+      if (bgLayer) bgLayer.style.backgroundImage = `url('${data.bgUrl}')`;
+    }
+  });
+
   socket.on('round_started', (data) => {
     if (myBets.dream > 0 || myBets.lightning > 0 || myBets.fire > 0) {
       lastRoundUserBets = { ...myBets };
