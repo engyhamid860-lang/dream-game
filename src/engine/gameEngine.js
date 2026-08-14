@@ -161,10 +161,10 @@ class GameEngine extends EventEmitter {
     this.currentWinner = winner;
     this.emit('winner_selected', { roundId: this.roundId, winner: this.currentWinner });
 
-    // Duration of winner selector animation client-side: 3.5 seconds
+    // Duration of winner selector animation client-side: 2.5 seconds
     setTimeout(() => {
       this.processPayouts();
-    }, 3500);
+    }, 2500);
   }
 
   processPayouts() {

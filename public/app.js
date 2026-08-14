@@ -394,7 +394,7 @@ function initApp() {
     const totalRotation = fullSpins + delta;
     const finalRotation = startAngle + totalRotation;
 
-    const duration = 4000; // 4.0 seconds total spin
+    const duration = 2500; // 2.5 seconds fast wheel spin
     const startTime = performance.now();
     let lastTickSlice = -1;
 
@@ -674,12 +674,23 @@ function initApp() {
       }
     }
 
-    // Update Bottom Row (Personal Stats for 'user_me')
+    // Update Bottom Row (Personal Stats for realUserId)
     const myTotalBetInRound = (myBets.dream + myBets.lightning + myBets.fire) || 0;
     let myWinPayoutInRound = 0;
     if (data.winners) {
-      const meWin = data.winners.find(w => w.userId === 'user_me');
+      const meWin = data.winners.find(w => w.userId === realUserId);
       if (meWin) myWinPayoutInRound = meWin.payout;
+    }
+
+    const myPopNameText = document.getElementById('myPopNameText');
+    const myPopAvatarMini = document.getElementById('myPopAvatarMini');
+    if (myPopNameText) myPopNameText.textContent = realUserName;
+    if (myPopAvatarMini) {
+      if (realUserAvatar) {
+        myPopAvatarMini.innerHTML = `<img src="${realUserAvatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" alt="Avatar">`;
+      } else {
+        myPopAvatarMini.textContent = '👤';
+      }
     }
 
     if (myPopBetVal) myPopBetVal.textContent = fmt(myTotalBetInRound);
