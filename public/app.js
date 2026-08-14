@@ -569,16 +569,16 @@ function initApp() {
     renderHistoryPills(data.history || []);
 
     if (data.bgUrl) {
-      const bgLayer = document.querySelector('.bg-game-layer');
-      if (bgLayer) bgLayer.style.backgroundImage = `url('${data.bgUrl}')`;
+      const appContainer = document.querySelector('.voice-app-container');
+      if (appContainer) appContainer.style.backgroundImage = `url('${data.bgUrl}')`;
     }
   }
 
   // Socket Events
   socket.on('bg_changed', (data) => {
     if (data && data.bgUrl) {
-      const bgLayer = document.querySelector('.bg-game-layer');
-      if (bgLayer) bgLayer.style.backgroundImage = `url('${data.bgUrl}')`;
+      const appContainer = document.querySelector('.voice-app-container');
+      if (appContainer) appContainer.style.backgroundImage = `url('${data.bgUrl}')`;
     }
   });
 

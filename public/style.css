@@ -52,12 +52,28 @@ body {
   position: relative;
 }
 
-/* Animated Rich Game Background Layer with Generated Cartoon Art */
+/* Animated Rich Game Background Layer (Restricted strictly inside phone container) */
 .bg-game-layer {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
+  display: none;
+}
+
+/* 2. Main Game Container (مخصص بحجم ومقاس شاشات الهواتف فقط) */
+.voice-app-container {
+  width: 100%;
+  max-width: 440px;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0 auto;
   background: url('assets/game_bg.jpg') center/cover no-repeat;
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: calc(6px + env(safe-area-inset-bottom, 0px));
+  touch-action: manipulation;
 }
 
 @keyframes bgPulseZoom {
@@ -196,25 +212,7 @@ body {
   box-shadow: 0 0 15px rgba(236, 72, 153, 0.8);
 }
 
-/* 2. Main Game Container (واجهة متجاوبة تفاعلية لكافة الشاشات) */
-.voice-app-container {
-  width: 100%;
-  max-width: 440px;
-  min-height: 100vh;
-  min-height: 100dvh;
-  margin: 0 auto;
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  backdrop-filter: none;
-  overflow: hidden;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding-bottom: calc(6px + env(safe-area-inset-bottom, 0px));
-  touch-action: manipulation;
-}
+/* 2. Main Game Container (مكون شاشة الهاتف) */
 
 @media (min-width: 992px) {
   body {
