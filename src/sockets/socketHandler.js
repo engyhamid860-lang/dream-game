@@ -41,7 +41,16 @@ function initSockets(io) {
 
   // Forward Game Engine events to all sockets in room
   gameEngine.on('round_started', (data) => {
-    io.to('voice_room_game').emit('round_started', data);
+    // Send customized round_started to each socket with their specific user balance
+    const sockets = io.sockets.sockets;
+    if (sockets && sockets.size > 0) {
+      sockets.forEach((s) => {
+        const sUserId = s.handshake.query.userId || s.handshake.query.user_id || 'user_me';
+        s.emit('round_started', gameEngine.getRoundState(sUserId));
+      });
+    } else {
+      io.to('voice_room_game').emit('round_started', data);
+    }
   });
 
   gameEngine.on('countdown_updated', (data) => {
