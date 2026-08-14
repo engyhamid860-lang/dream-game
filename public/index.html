@@ -182,14 +182,14 @@
           <!-- Left Side: Player Profile & Wallet Box -->
           <div class="player-profile-wallet-box">
             <div class="player-avatar-frame">
-              <span class="player-avatar-icon">👤</span>
+              <span class="player-avatar-icon" id="userAvatarIcon">👤</span>
+              <img id="userAvatarImg" class="player-avatar-img" style="display:none; width:100%; height:100%; border-radius:50%; object-fit:cover;" alt="Avatar" />
             </div>
             <div class="player-wallet-info">
-              <span class="player-name-text">أنت</span>
+              <span class="player-name-text" id="userNameText">أنت</span>
               <div class="balance-row">
                 <span class="coin-gold-dot">🪙</span>
-                <span class="balance-amount" id="userBalanceText">150,000</span>
-                <button class="plus-deposit-btn" id="btnDeposit" title="شحن الرصيد">+</button>
+                <span class="balance-amount" id="userBalanceText">0</span>
               </div>
             </div>
           </div>

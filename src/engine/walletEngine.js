@@ -4,7 +4,7 @@ class WalletEngine {
   constructor() {
     // Real connected players balances
     this.balances = new Map([
-      ['user_me', { id: 'user_me', name: 'أنت (اللاعب)', avatar: '👤', balance: 150000 }]
+      ['user_me', { id: 'user_me', name: 'أنت (اللاعب)', avatar: '👤', balance: 0 }]
     ]);
 
     // Ledger to ensure idempotency and transaction audit
@@ -17,7 +17,7 @@ class WalletEngine {
         id: userId,
         name: name || `لاعب ${userId.slice(-4)}`,
         avatar: '👤',
-        balance: (initialBalance !== null && !isNaN(initialBalance) && initialBalance >= 0) ? initialBalance : 150000
+        balance: (initialBalance !== null && !isNaN(initialBalance) && initialBalance >= 0) ? initialBalance : 0
       });
     } else {
       const user = this.balances.get(userId);

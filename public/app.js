@@ -7,13 +7,28 @@ function initApp() {
   // Parse URL parameters for real user authentication & wallet balance
   const urlParams = new URLSearchParams(window.location.search);
   const realUserId = urlParams.get('userId') || urlParams.get('user_id') || 'user_me';
-  const realUserName = urlParams.get('userName') || urlParams.get('username') || urlParams.get('name') || '';
-  const realUserBalance = urlParams.get('balance') || urlParams.get('user_balance') || '';
+  const realUserName = urlParams.get('userName') || urlParams.get('username') || urlParams.get('name') || 'لاعب حقيقي';
+  const realUserAvatar = urlParams.get('avatar') || urlParams.get('user_avatar') || urlParams.get('img') || '';
+  const realUserBalance = (urlParams.get('balance') !== null && urlParams.get('balance') !== '') ? parseInt(urlParams.get('balance')) : null;
+
+  // Render Real User Name & Avatar in Header
+  const userNameTextEl = document.getElementById('userNameText');
+  const userAvatarIconEl = document.getElementById('userAvatarIcon');
+  const userAvatarImgEl = document.getElementById('userAvatarImg');
+
+  if (userNameTextEl) safeSetText(userNameTextEl, realUserName);
+  if (realUserAvatar) {
+    if (userAvatarImgEl) {
+      userAvatarImgEl.src = realUserAvatar;
+      userAvatarImgEl.style.display = 'block';
+    }
+    if (userAvatarIconEl) userAvatarIconEl.style.display = 'none';
+  }
 
   // Initialize Socket.IO with real user query params
   const socketQuery = { userId: realUserId };
   if (realUserName) socketQuery.userName = realUserName;
-  if (realUserBalance) socketQuery.balance = realUserBalance;
+  if (realUserBalance !== null && !isNaN(realUserBalance)) socketQuery.balance = realUserBalance;
 
   const socket = io({ query: socketQuery });
 
@@ -36,7 +51,7 @@ function initApp() {
   let currentRoundId = 101;
   let currentStatus = 'WAITING';
   let selectedAmount = 1000;
-  let userBalance = 150000;
+  let userBalance = (realUserBalance !== null && !isNaN(realUserBalance)) ? realUserBalance : 0;
   let characterTotals = { dream: 0, lightning: 0, fire: 0 };
   let myBets = { dream: 0, lightning: 0, fire: 0 };
   let lastRoundUserBets = { dream: 0, lightning: 0, fire: 0 };
@@ -498,8 +513,8 @@ function initApp() {
     socket.emit('place_bet', {
       character: charName,
       amount: selectedAmount,
-      userName: 'أنت',
-      userAvatar: '👤'
+      userName: realUserName,
+      userAvatar: realUserAvatar || '👤'
     }, (response) => {
       if (response && response.success) {
         if (window.soundFx) window.soundFx.playChipSound();
