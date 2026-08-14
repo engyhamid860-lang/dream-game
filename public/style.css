@@ -1267,13 +1267,14 @@ body {
   font-weight: 900;
 }
 
-/* 📜 Results Strip Section & Repeat Button (مباشرة فوق الكروت، بعرض الشاشة الكامل وبألوان الإطار) */
+/* 📜 Results Strip Section (مباشرة فوق الكروت، بعرض الشاشة الكامل وبألوان الإطار) */
 .results-and-repeat-section {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 0;
   width: 100%;
-  margin: 2px 0 4px 0;
+  margin: 0;
+  padding: 0;
 }
 
 .repeat-btn-subrow {
@@ -1346,28 +1347,32 @@ body {
 
 /* 🎨 3D Cartoon Repeat Bet Button ("🔄 كرر") - بألوان الإطار الخيالي الفاخرة */
 .cartoon-repeat-btn {
-  background: linear-gradient(135deg, #7e22ce 0%, #ec4899 50%, #d97706 100%);
-  border: 2px solid #ffd700;
-  border-bottom: 3.5px solid #581c87;
-  border-radius: 16px;
-  padding: 4px 12px;
+  position: absolute;
+  right: 14px;
+  bottom: 28px;
+  z-index: 50;
+  background: linear-gradient(180deg, #f43f5e 0%, #ec4899 50%, #db2777 100%);
+  border: 2px solid #ffffff;
+  border-bottom: 4px solid #9d174d;
+  border-radius: 20px;
+  padding: 6px 18px;
   color: #ffffff;
   font-family: var(--font-family);
   font-weight: 900;
-  font-size: 0.8rem;
+  font-size: 0.88rem;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 4px;
-  box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
-  text-shadow: 0 1.5px 3px rgba(0, 0, 0, 0.8);
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.4);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
   white-space: nowrap;
   transition: transform 0.15s ease, border-bottom-width 0.15s ease;
 }
 
 .cartoon-repeat-btn:hover {
   transform: translateY(-2px);
-  background: linear-gradient(135deg, #9333ea 0%, #f472b6 50%, #f59e0b 100%);
+  background: linear-gradient(180deg, #ff718a 0%, #f43f5e 50%, #e11d48 100%);
   box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6);
 }
 
