@@ -4,12 +4,13 @@ function initApp() {
   if (appInitialized) return;
   appInitialized = true;
 
-  // Parse URL parameters for real user authentication & wallet balance
+  // Parse URL parameters for real user authentication & wallet balance (Supports all parameter aliases)
   const urlParams = new URLSearchParams(window.location.search);
-  const realUserId = urlParams.get('userId') || urlParams.get('user_id') || 'user_me';
-  const realUserName = urlParams.get('userName') || urlParams.get('username') || urlParams.get('name') || 'لاعب حقيقي';
-  const realUserAvatar = urlParams.get('avatar') || urlParams.get('user_avatar') || urlParams.get('img') || '';
-  const realUserBalance = (urlParams.get('balance') !== null && urlParams.get('balance') !== '') ? parseInt(urlParams.get('balance')) : null;
+  const realUserId = urlParams.get('userId') || urlParams.get('user_id') || urlParams.get('id') || 'user_me';
+  const realUserName = urlParams.get('userName') || urlParams.get('username') || urlParams.get('name') || 'أنت';
+  const realUserAvatar = urlParams.get('avatar') || urlParams.get('avatarUrl') || urlParams.get('user_avatar') || urlParams.get('img') || '';
+  const rawBalance = urlParams.get('balance') || urlParams.get('user_balance') || urlParams.get('wallet_balance') || urlParams.get('coins');
+  const realUserBalance = (rawBalance !== null && rawBalance !== undefined && rawBalance !== '') ? parseInt(rawBalance) : null;
 
   // Render Real User Name & Avatar in Header
   const userNameTextEl = document.getElementById('userNameText');
