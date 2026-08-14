@@ -289,22 +289,22 @@ function initApp() {
     const displayTimer = (liveTimerVal !== null && liveTimerVal !== undefined) ? liveTimerVal : currentLiveTimer;
     const isWarning = displayTimer <= 3 && displayTimer > 0;
 
-    // Medallion Outer Bevel Ring (تكبير دائرة المركز لتملأ الدائرة الذهبية للصورة)
+    // Medallion Outer Bevel Ring (مطابقة 100% لتعبئة الحلقة الذهبية الصغيرة في منتصف صورة المرجع)
     wheelCtx.save();
     wheelCtx.beginPath();
-    wheelCtx.arc(centerX, centerY, 44, 0, Math.PI * 2);
+    wheelCtx.arc(centerX, centerY, 52, 0, Math.PI * 2);
     wheelCtx.fillStyle = '#1e1b4b';
     wheelCtx.fill();
     wheelCtx.strokeStyle = rimGrad;
-    wheelCtx.lineWidth = 4.5;
+    wheelCtx.lineWidth = 5;
     wheelCtx.shadowColor = '#000000';
-    wheelCtx.shadowBlur = 12;
+    wheelCtx.shadowBlur = 14;
     wheelCtx.stroke();
 
     // Inner Medallion Core Circle
     wheelCtx.beginPath();
-    wheelCtx.arc(centerX, centerY, 36, 0, Math.PI * 2);
-    const coreGrad = wheelCtx.createRadialGradient(centerX, centerY, 5, centerX, centerY, 36);
+    wheelCtx.arc(centerX, centerY, 42, 0, Math.PI * 2);
+    const coreGrad = wheelCtx.createRadialGradient(centerX, centerY, 5, centerX, centerY, 42);
     if (isWarning) {
       coreGrad.addColorStop(0, '#ef4444');
       coreGrad.addColorStop(1, '#7f1d1d');
@@ -315,7 +315,7 @@ function initApp() {
     wheelCtx.fillStyle = coreGrad;
     wheelCtx.fill();
     wheelCtx.strokeStyle = isWarning ? '#fca5a5' : '#ffd700';
-    wheelCtx.lineWidth = 2.5;
+    wheelCtx.lineWidth = 3;
     wheelCtx.stroke();
 
     // Timer / Symbol Text inside Medallion
