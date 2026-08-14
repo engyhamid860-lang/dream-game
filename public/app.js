@@ -138,6 +138,7 @@ function initApp() {
   function applyWheelLayout(layout) {
     if (!layout) return;
     wheelLayout = { ...wheelLayout, ...layout };
+    console.log("⚙️ Applying Wheel Layout settings:", wheelLayout);
     
     // Apply dynamic slices if updated from admin panel
     if (wheelLayout.slices && Array.isArray(wheelLayout.slices)) {
@@ -645,6 +646,7 @@ function initApp() {
   });
 
   socket.on('layout_changed', (layout) => {
+    console.log("🔌 Socket layout_changed received:", layout);
     applyWheelLayout(layout);
   });
 
